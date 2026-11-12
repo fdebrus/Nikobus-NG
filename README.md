@@ -3,9 +3,10 @@
 A second, independent Home Assistant integration for Nikobus, written from
 scratch on top of the same protocol library
 ([nikobus-connect](https://github.com/fdebrus/nikobus-connect)). It is not a
-new version of the Nikobus integration in this repository: it is a
-clean-slate design, kept in its own folder under its own domain,
-`nikobus_ng`, so the two can be compared.
+new version of the [Nikobus integration](https://github.com/fdebrus/Nikobus-HA):
+it is a clean-slate design under its own domain, `nikobus_ng`, so the two
+can be installed side by side and compared. It was written in a folder of
+that repository and moved here, with its history, at 0.10.0.
 
 **Status: experimental.** It is tested against the real Home Assistant
 (2026.10.4) and against `nikobus-simulator`, the simulated PC-Link shipped
@@ -14,7 +15,8 @@ PC-Link, six output modules, 44 plates, 2026-11-11): the discovery ran to
 its end and every output was read. Commands, presses and shutters were not
 observed there. See [What is verified](#what-is-verified).
 
-The reasoning behind the design is in [REVIEW.md](REVIEW.md).
+The reasoning behind the design is in the review of the Nikobus integration it
+started from, [nikobus-ng-review.md](https://github.com/fdebrus/Nikobus-HA/blob/main/documentation/nikobus-ng-review.md).
 
 ## What it does
 
@@ -158,7 +160,7 @@ The reasoning behind the design is in [REVIEW.md](REVIEW.md).
 
 ## How it differs
 
-| | Nikobus (this repository) | Nikobus NG |
+| | Nikobus | Nikobus NG |
 |---|---|---|
 | Python | 15 036 lines | 5 778 lines |
 | Output state | buffer, plus an optimistic copy per entity | the buffer; entities are views |
@@ -237,8 +239,11 @@ to take the keys.
 
 Only one program may talk to the bus. **Disable the Nikobus entry first.**
 
-1. Copy `custom_components/nikobus_ng` into your Home Assistant
-   `config/custom_components` folder and restart.
+1. With HACS: *HACS → ⋮ → Custom repositories*, add
+   `https://github.com/fdebrus/Nikobus-NG` as an *Integration*, install
+   *Nikobus NG* and restart. Without HACS: copy the folder
+   `custom_components/nikobus_ng` into your Home Assistant
+   `config/custom_components` folder, under that exact name, and restart.
 2. *Settings → Devices & services → Add integration → Nikobus NG*, and give
    the serial port or `host:port`.
 3. The first setup starts a discovery. Follow it on the *Discovery* sensor
@@ -252,7 +257,7 @@ It never writes to a module's programming.
 
 ```bash
 pip install -r requirements_test.txt     # Python 3.14, Home Assistant 2026.10
-python -m pytest -q                      # from this folder
+python -m pytest -q
 ```
 
 The fixtures start a simulated installation on a local socket, seed the

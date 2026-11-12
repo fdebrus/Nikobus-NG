@@ -4,11 +4,12 @@ from __future__ import annotations
 
 from datetime import timedelta
 
-from custom_components.nikobus_ng.cover import NikobusCover
 from homeassistant.core import HomeAssistant
 from homeassistant.util import dt as dt_util
 from nikobus_connect.travel import TravelCalculator
 from pytest_homeassistant_custom_component.common import async_fire_time_changed
+
+from custom_components.nikobus_ng.cover import NikobusCover
 
 from .conftest import ROLLER, SetupFixture, WallSimulator, wait_for
 

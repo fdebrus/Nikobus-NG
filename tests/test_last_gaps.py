@@ -8,6 +8,16 @@ from typing import Any
 from unittest.mock import AsyncMock, patch
 
 import pytest
+from homeassistant.config_entries import ConfigEntryState
+from homeassistant.core import HomeAssistant
+from homeassistant.data_entry_flow import FlowResultType
+from homeassistant.helpers import entity_registry as er
+from homeassistant.helpers import issue_registry as ir
+from homeassistant.setup import async_setup_component
+from nikobus_connect import NikobusAPI
+from pytest_homeassistant_custom_component.common import MockConfigEntry
+from pytest_homeassistant_custom_component.typing import ClientSessionGenerator
+
 from custom_components.nikobus_ng.const import (
     CONF_LED_KEYS,
     CONF_LIGHT_OUTPUTS,
@@ -18,15 +28,6 @@ from custom_components.nikobus_ng.const import (
     DOMAIN,
 )
 from custom_components.nikobus_ng.manual import inventory_from_files
-from homeassistant.config_entries import ConfigEntryState
-from homeassistant.core import HomeAssistant
-from homeassistant.data_entry_flow import FlowResultType
-from homeassistant.helpers import entity_registry as er
-from homeassistant.helpers import issue_registry as ir
-from homeassistant.setup import async_setup_component
-from nikobus_connect import NikobusAPI
-from pytest_homeassistant_custom_component.common import MockConfigEntry
-from pytest_homeassistant_custom_component.typing import ClientSessionGenerator
 
 from .conftest import (
     ENTRY_ID,

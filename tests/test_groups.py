@@ -5,13 +5,14 @@ from __future__ import annotations
 from typing import Any
 
 import pytest
-from custom_components.nikobus_ng import async_remove_config_entry_device
-from custom_components.nikobus_ng.const import DOMAIN
-from custom_components.nikobus_ng.entity import plate_group
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import device_registry as dr
 from nikobus_connect.discovery.mapping import DEVICE_TYPES
 from pytest_homeassistant_custom_component.common import MockConfigEntry
+
+from custom_components.nikobus_ng import async_remove_config_entry_device
+from custom_components.nikobus_ng.const import DOMAIN
+from custom_components.nikobus_ng.entity import plate_group
 
 from .conftest import AUDIO, ENTRY_ID, KEY_SCENE, PLATE, SWITCH, SetupFixture
 from .test_parity import INPUT, _with_logical_input

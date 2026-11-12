@@ -5,10 +5,6 @@ from __future__ import annotations
 from typing import Any
 
 import pytest
-from custom_components.nikobus_ng import async_remove_config_entry_device
-from custom_components.nikobus_ng.const import DOMAIN
-from custom_components.nikobus_ng.describe import _explained
-from custom_components.nikobus_ng.llm_api import API_PROMPT
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResultType
 from homeassistant.helpers import area_registry as ar
@@ -17,6 +13,11 @@ from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers import label_registry as lr
 from nikobus_connect.discovery import meaning
 from pytest_homeassistant_custom_component.common import MockConfigEntry
+
+from custom_components.nikobus_ng import async_remove_config_entry_device
+from custom_components.nikobus_ng.const import DOMAIN
+from custom_components.nikobus_ng.describe import _explained
+from custom_components.nikobus_ng.llm_api import API_PROMPT
 
 from .conftest import (
     DIMMER,

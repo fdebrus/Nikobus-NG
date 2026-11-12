@@ -7,11 +7,6 @@ from typing import Any
 from unittest.mock import patch
 
 import pytest
-from custom_components.nikobus_ng.const import (
-    CONF_FAN_OUTPUTS,
-    CONF_LED_KEYS,
-    DOMAIN,
-)
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResultType
@@ -22,6 +17,12 @@ from nikobus_simulator.gateway import PRESS_DEBOUNCE
 from nikobus_simulator.module import SimulatedModule
 from nikobus_simulator.topology import ModuleSpec
 from pytest_homeassistant_custom_component.common import MockConfigEntry
+
+from custom_components.nikobus_ng.const import (
+    CONF_FAN_OUTPUTS,
+    CONF_LED_KEYS,
+    DOMAIN,
+)
 
 from .conftest import (
     AUDIO,

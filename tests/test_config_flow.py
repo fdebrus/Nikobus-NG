@@ -5,12 +5,6 @@ from __future__ import annotations
 from unittest.mock import patch
 
 import pytest
-from custom_components.nikobus_ng.const import (
-    CONF_CONNECTION,
-    CONF_FEEDBACK_MODULE,
-    CONF_LIGHT_OUTPUTS,
-    DOMAIN,
-)
 from homeassistant.config_entries import SOURCE_USER, ConfigFlowResult
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResultType
@@ -19,6 +13,13 @@ from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import entity_registry as er
 from nikobus_connect.nkb import NkbData, SceneDef
 from pytest_homeassistant_custom_component.common import MockConfigEntry
+
+from custom_components.nikobus_ng.const import (
+    CONF_CONNECTION,
+    CONF_FEEDBACK_MODULE,
+    CONF_LIGHT_OUTPUTS,
+    DOMAIN,
+)
 
 from .conftest import DIMMER, PLATE, SWITCH, SetupFixture, WallSimulator, wait_for
 

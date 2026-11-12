@@ -5,13 +5,14 @@ from __future__ import annotations
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
-from custom_components.nikobus_ng.const import DOMAIN
-from custom_components.nikobus_ng.discovery import DiscoveryRunner
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import entity_registry as er
 from nikobus_connect.discovery import InventoryQueryType
 from pytest_homeassistant_custom_component.common import MockConfigEntry
+
+from custom_components.nikobus_ng.const import DOMAIN
+from custom_components.nikobus_ng.discovery import DiscoveryRunner
 
 from .conftest import (
     DIMMER,

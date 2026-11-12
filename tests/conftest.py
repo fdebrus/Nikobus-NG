@@ -19,12 +19,6 @@ from collections.abc import AsyncIterator, Awaitable, Callable
 from typing import Any
 
 import pytest
-from custom_components.nikobus_ng.const import (
-    CONF_CONNECTION,
-    CONF_FEEDBACK_MODULE,
-    DOMAIN,
-)
-from custom_components.nikobus_ng.hub import NikobusHub
 from homeassistant.core import HomeAssistant
 from nikobus_connect.discovery.fileio import merge_discovered_buttons
 from nikobus_connect.discovery.mapping import DEVICE_TYPES, KEY_MAPPING
@@ -34,6 +28,13 @@ from nikobus_simulator.gateway import frame as gateway_frame
 from nikobus_simulator.server import NikobusSimulator
 from nikobus_simulator.topology import load_installation
 from pytest_homeassistant_custom_component.common import MockConfigEntry
+
+from custom_components.nikobus_ng.const import (
+    CONF_CONNECTION,
+    CONF_FEEDBACK_MODULE,
+    DOMAIN,
+)
+from custom_components.nikobus_ng.hub import NikobusHub
 
 ENTRY_ID = "nikobus_test"
 SWITCH, DIMMER, ROLLER = "4707", "0E6C", "9105"

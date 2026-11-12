@@ -5,12 +5,13 @@ from __future__ import annotations
 from typing import Any
 
 import pytest
-from custom_components.nikobus_ng.const import CONF_CONNECTION, DOMAIN
-from custom_components.nikobus_ng.diagnostics import async_get_config_entry_diagnostics
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import entity_registry as er
 from nikobus_connect.discovery import motion_detector_bus_addresses
 from pytest_homeassistant_custom_component.common import MockConfigEntry
+
+from custom_components.nikobus_ng.const import CONF_CONNECTION, DOMAIN
+from custom_components.nikobus_ng.diagnostics import async_get_config_entry_diagnostics
 
 from .conftest import (
     ENTRY_ID,

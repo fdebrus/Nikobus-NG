@@ -5,10 +5,6 @@ from __future__ import annotations
 from typing import Any
 
 import pytest
-from custom_components.nikobus_ng.const import CONF_FEEDBACK_MODULE, DOMAIN
-from custom_components.nikobus_ng.diagnostics import async_get_config_entry_diagnostics
-from custom_components.nikobus_ng.discovery import DiscoveryRunner
-from custom_components.nikobus_ng.hub import NikobusHub
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ServiceValidationError
@@ -16,6 +12,11 @@ from homeassistant.helpers import issue_registry as ir
 from homeassistant.setup import async_setup_component
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 from pytest_homeassistant_custom_component.typing import ClientSessionGenerator
+
+from custom_components.nikobus_ng.const import CONF_FEEDBACK_MODULE, DOMAIN
+from custom_components.nikobus_ng.diagnostics import async_get_config_entry_diagnostics
+from custom_components.nikobus_ng.discovery import DiscoveryRunner
+from custom_components.nikobus_ng.hub import NikobusHub
 
 from .conftest import (
     DIMMER,

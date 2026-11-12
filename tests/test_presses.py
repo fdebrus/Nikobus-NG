@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
-from custom_components.nikobus_ng.const import DOMAIN, EVENT_PRESS
 from homeassistant.core import Event, HomeAssistant
 from homeassistant.helpers import entity_registry as er
+
+from custom_components.nikobus_ng.const import DOMAIN, EVENT_PRESS
 
 from .conftest import (
     KEY_SWITCH_1,

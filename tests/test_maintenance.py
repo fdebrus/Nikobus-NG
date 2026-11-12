@@ -14,7 +14,6 @@ from typing import Any
 from unittest.mock import AsyncMock, patch
 
 import pytest
-from custom_components.nikobus_ng.const import DOMAIN
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import entity_registry as er
@@ -24,6 +23,8 @@ from homeassistant.util import dt as dt_util
 from nikobus_connect import NikobusAPI
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 from pytest_homeassistant_custom_component.typing import ClientSessionGenerator
+
+from custom_components.nikobus_ng.const import DOMAIN
 
 from .conftest import ENTRY_ID, SWITCH, SetupFixture, wait_for
 

@@ -6,8 +6,6 @@ from types import SimpleNamespace
 from typing import Any
 
 import pytest
-from custom_components.nikobus_ng.const import CONF_LIGHT_OUTPUTS, DOMAIN
-from custom_components.nikobus_ng.takeover import _carried_name
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResultType
@@ -16,6 +14,9 @@ from homeassistant.helpers import area_registry as ar
 from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers import llm
 from pytest_homeassistant_custom_component.common import MockConfigEntry
+
+from custom_components.nikobus_ng.const import CONF_LIGHT_OUTPUTS, DOMAIN
+from custom_components.nikobus_ng.takeover import _carried_name
 
 from .conftest import (
     DIMMER,

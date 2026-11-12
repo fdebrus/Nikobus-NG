@@ -6,11 +6,6 @@ from datetime import timedelta
 from typing import Any
 
 import pytest
-from custom_components.nikobus_ng.const import (
-    CONF_FEEDBACK_MODULE,
-    CONF_SHUTTERS,
-    DOMAIN,
-)
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResultType
 from homeassistant.exceptions import ServiceValidationError
@@ -23,6 +18,12 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 from pytest_homeassistant_custom_component.typing import (
     ClientSessionGenerator,
     WebSocketGenerator,
+)
+
+from custom_components.nikobus_ng.const import (
+    CONF_FEEDBACK_MODULE,
+    CONF_SHUTTERS,
+    DOMAIN,
 )
 
 from .conftest import (
