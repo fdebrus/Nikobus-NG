@@ -212,15 +212,25 @@ async def test_an_entity_shows_what_it_is_on_the_bus(
     assert (shutter["nikobus_address"], shutter["movement_source"]) == (ROLLER, None)
     key = hass.states.get(KEY_EVENT).attributes
     assert (key["wall_button_address"], key["wall_button_key"], key["wall_button_model"]) == (PLATE, "1C", "05-064")
-    assert key["linked_outputs"] == [
-        {
-            "module": "Switch module (4707)",
-            "channel": 1,
-            "name": None,
-            "mode": "M05 (Impulse)",
-            "does": "Each press switches the output over, on or off.",
-        }
-    ]
+    (linked,) = key["linked_outputs"]
+    assert {k: linked[k] for k in ("module", "module_address", "channel", "mode", "t1", "t2", "does")} == {
+        "module": "Switch module (4707)",
+        "module_address": SWITCH,
+        "channel": 1,
+        "mode": "M05 (Impulse)",
+        "t1": None,
+        "t2": None,
+        "does": "Each press switches the output over, on or off.",
+    }
+    # A shutter's link, with the value as read and as what it is.
+    # Both keys of the pair drive it; the first is 1C.
+    driver = shutter["controlled_by"][0]
+    assert (driver["key"], driver["mode"], driver["t1"], driver["run_time"]) == (
+        "1C",
+        "M01 (Open - stop - close)",
+        "30 s",
+        "30 s",
+    )
     scene = hass.states.get("scene.dinner").attributes
     assert (scene["bus_address"], scene["member_count"]) == (KEY_SCENE, 2)
     assert scene["triggered_by"] == [f"Bus push button, 4 control buttons #N037234 1C ({KEY_SCENE})"]

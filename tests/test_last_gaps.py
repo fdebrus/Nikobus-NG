@@ -178,7 +178,7 @@ async def test_a_calendar_channel_is_named_among_what_drives_an_output(hass: Hom
     }
     await setup()
     driven = hass.states.get("switch.switch_module_4707_output_3").attributes["controlled_by"]
-    assert driven == ["PC-Link calendar channel CH001A"]
+    assert driven == [{"button": "PC-Link calendar channel CH001A"}]
     # What the PC-Link sends for a channel is not known: it is no key to press.
     assert er.async_get(hass).async_get_entity_id("event", DOMAIN, "8A0C19_event") is None
 
