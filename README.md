@@ -150,7 +150,7 @@ A link is said in words, with its values under what they are instead of the vend
 }
 ```
 
-The wording is the library's, taken from the vendor's manuals. A two-key mode speaks of "the upper key" and "the lower key"; which key of the plate that is, is not stored in a link.
+The wording is the library's, taken from the vendor's manuals. A mode on two or four keys is said for the key the link is on: "This key switches the output on; the lower key of the pair switches it off." On a plate, keys A and C are the upper ones, B and D the lower ones.
 
 ---
 

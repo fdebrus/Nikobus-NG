@@ -529,12 +529,14 @@ class Inventory:
         for link in point.get("linked_modules") or []:
             address = str(link.get("module_address") or "").upper()
             for output in link.get("outputs") or []:
-                outputs.append(self.output_link(address, types.get(address), output))
+                outputs.append(self.output_link(address, types.get(address), output, key.label))
         return outputs
 
-    def output_link(self, address: str, module_type: str | None, output: dict[str, Any]) -> dict[str, Any]:
-        """One link as an attribute shows it."""
-        meaning = describe_link(module_type, output.get("mode"), output.get("t1"), output.get("t2"))
+    def output_link(
+        self, address: str, module_type: str | None, output: dict[str, Any], key: str | None = None
+    ) -> dict[str, Any]:
+        """One link as an attribute shows it; said for the key it is on where that is known."""
+        meaning = describe_link(module_type, output.get("mode"), output.get("t1"), output.get("t2"), key=key)
         channel = output.get("channel")
         shown: dict[str, Any] = {
             "module": self.module_label(address),

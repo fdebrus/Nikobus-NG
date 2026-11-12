@@ -43,8 +43,9 @@ async def test_a_scanned_link_is_said_in_words_with_its_values_named(hass: HomeA
     assert outputs[(DIMMER, 1)]["controlled_by"][0]["links"] == [
         {
             "mode": "M01 (Dim on/off (2 buttons))",
-            "does": "Two keys: a short press on the upper one switches the output on at its last level, "
-            "on the lower one off; holding either dims up or down. Dimming on takes 4 s, dimming off 1 s.",
+            # The link is on key 1C, an upper key.
+            "does": "A short press on this key switches the output on at its last level, holding it dims up; "
+            "the lower key of the pair switches off and dims down. Dimming on takes 4 s, dimming off 1 s.",
             "dim_on_time": "4 s",
             "dim_off_time": "1 s",
         }

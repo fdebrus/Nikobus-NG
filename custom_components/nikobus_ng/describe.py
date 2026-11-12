@@ -29,10 +29,10 @@ if TYPE_CHECKING:
     from .inventory import Key, OutputModule
 
 
-def _explained(module_type: str | None, output: dict[str, Any]) -> dict[str, Any]:
-    """A link's mode, what a press then does, and its values under what they are."""
+def _explained(module_type: str | None, output: dict[str, Any], key: str | None = None) -> dict[str, Any]:
+    """A link's mode, what a press of its key then does, and its values under what they are."""
     mode = output.get("mode")
-    meaning = describe_link(module_type, mode, output.get("t1"), output.get("t2"))
+    meaning = describe_link(module_type, mode, output.get("t1"), output.get("t2"), key=key)
     if meaning is None:
         # A mode the library has no words for keeps its values as they were read.
         return {"mode": mode, **{name: output[name] for name in ("t1", "t2") if output.get(name)}}
@@ -88,7 +88,7 @@ class Describer:
                 target: dict[str, Any] = {"module": address, "channel": channel}
                 if module is not None and isinstance(channel, int):
                     target = self._output_ref(module, channel)
-                links.append((target, _explained(module.module_type if module else None, output)))
+                links.append((target, _explained(module.module_type if module else None, output, key.label)))
         return links
 
     def key(self, key: Key) -> dict[str, Any]:
