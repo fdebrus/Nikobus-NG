@@ -51,7 +51,7 @@ async def test_a_light_scene_the_scan_finds_is_a_scene_under_its_project_name(ha
     assert list(hub.inventory.scenes) == [KEY_SCENE]
     state = hass.states.get(er.async_get(hass).async_get_entity_id("scene", DOMAIN, f"{KEY_SCENE}_scene"))
     # A device of its own, so the scene is shown under the project's name and nothing else.
-    assert (state.name, state.attributes["outputs"]) == ("Dinner", 2)
+    assert (state.name, state.attributes["member_count"]) == ("Dinner", 2)
 
 
 async def test_a_light_scene_the_project_does_not_name_stays_a_key(hass: HomeAssistant, scanned: SetupFixture) -> None:

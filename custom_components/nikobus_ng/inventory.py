@@ -16,7 +16,11 @@ from typing import Any
 
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.storage import Store
-from nikobus_connect.discovery import find_operation_point, is_motion_detector
+from nikobus_connect.discovery import (
+    describe_link,
+    find_operation_point,
+    is_motion_detector,
+)
 from nikobus_connect.discovery.store import (
     cf_cover_members,
     cf_member_set,
@@ -97,6 +101,7 @@ class Inventory:
         self.grouped: dict[str, dict[str, Any]] = {}
         self._linked: set[tuple[str, int]] | None = None
         self._drivers: dict[tuple[str, Any], list[Key]] | None = None
+        self._keys_by_frame: dict[str, Key] | None = None
 
     async def async_load(self) -> None:
         """Read the store; anything missing or malformed starts empty."""
@@ -168,6 +173,7 @@ class Inventory:
         self.grouped.update(grouped)
         self._linked = None
         self._drivers = None
+        self._keys_by_frame = None
 
     def _module_entries(self) -> dict[str, dict[str, Any]]:
         """The modules, each as the type the options give it when they give one."""
@@ -503,6 +509,42 @@ class Inventory:
                         if key not in drivers:
                             drivers.append(key)
         return list(self._drivers.get((address.upper(), channel), []))
+
+    def key_of(self, bus_address: str) -> Key | None:
+        """The key that sends this frame."""
+        if self._keys_by_frame is None:
+            self._keys_by_frame = {key.bus_address: key for key in self.iter_keys()}
+        return self._keys_by_frame.get(bus_address.upper())
+
+    def frame_label(self, bus_address: str) -> str:
+        """A frame as a person would point at it: its key where it is one, else the frame."""
+        key = self.key_of(bus_address)
+        return self.key_label(key) if key else bus_address.upper()
+
+    def linked_outputs(self, key: Key) -> list[dict[str, Any]]:
+        """Every output a key drives: its module, its channel, and what the link does."""
+        types = {address: entry.get("module_type") for address, entry in self._module_entries().items()}
+        outputs = []
+        point = key.plate_entry["operation_points"][key.label] or {}
+        for link in point.get("linked_modules") or []:
+            address = str(link.get("module_address") or "").upper()
+            for output in link.get("outputs") or []:
+                outputs.append(self.output_link(address, types.get(address), output))
+        return outputs
+
+    def output_link(self, address: str, module_type: str | None, output: dict[str, Any]) -> dict[str, Any]:
+        """One link as an attribute shows it."""
+        meaning = describe_link(module_type, output.get("mode"), output.get("t1"), output.get("t2"))
+        channel = output.get("channel")
+        shown: dict[str, Any] = {
+            "module": self.module_label(address),
+            "channel": channel,
+            "name": self.channel_name(address, channel) if isinstance(channel, int) else None,
+            "mode": output.get("mode"),
+        }
+        if meaning is not None:
+            shown["does"] = meaning.summary
+        return shown
 
     def key_label(self, key: Key) -> str:
         """A key as a person would point at it: its plate, its face, its frame."""

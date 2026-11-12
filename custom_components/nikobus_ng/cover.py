@@ -105,6 +105,8 @@ class NikobusCover(ChannelEntity, CoverEntity, RestoreEntity):
         )
         down = settings.get(CONF_CLOSE_TIME) or hub.inventory.run_time(module.address, channel, "down") or up
         self._travel = TravelCalculator(up, down)
+        #: Who started the last move: Home Assistant, or a key on the bus.
+        self._movement_source: str | None = None
         self._end_margin: float | None = settings.get(CONF_END_MARGIN)
         self._moving: str | None = None
         self._target: float | None = None
@@ -120,6 +122,17 @@ class NikobusCover(ChannelEntity, CoverEntity, RestoreEntity):
         if last is not None and (position := last.attributes.get(ATTR_CURRENT_POSITION)) is not None:
             self._travel.set_position(float(position))
         self.async_on_remove(self._stop_ticking)
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """The output's details, the run times its position is estimated from, and who moved it last."""
+        return {
+            **(self._attr_extra_state_attributes or {}),
+            "operation_time_up": self._travel.time_up,
+            "operation_time_down": self._travel.time_down,
+            "end_stop_margin": COVER_END_MARGIN if self._end_margin is None else self._end_margin,
+            "movement_source": self._movement_source,
+        }
 
     @property
     def current_cover_position(self) -> int:
@@ -179,6 +192,7 @@ class NikobusCover(ChannelEntity, CoverEntity, RestoreEntity):
         self._moving = direction
         self._target = target
         self._commanded = commanded
+        self._movement_source = "ha" if commanded else "nikobus"
         self._end_at = None
         if self._untrack is None:
             self._untrack = async_track_time_interval(self.hass, self._async_tick, _TICK)
@@ -271,6 +285,7 @@ class NikobusShutterGroup(NikobusEntity, CoverEntity):
     ) -> None:
         super().__init__(hub)
         self._member_ids = [f"{module}_{channel}" for module, channel in members]
+        self._bus_address = str(record.get("bus_address") or address).upper()
         self._members: list[str] = []
         self._attr_unique_id = f"{address}_group"
         # The key the icon is found under; the name is the device's.
@@ -298,8 +313,8 @@ class NikobusShutterGroup(NikobusEntity, CoverEntity):
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
-        """The shutters the group moves."""
-        return {"entity_id": self._members}
+        """The shutters the group moves, and the frame of the function behind it."""
+        return {"entity_id": self._members, "bus_address": self._bus_address, "member_count": len(self._members)}
 
     def _positions(self) -> list[int]:
         positions = []
