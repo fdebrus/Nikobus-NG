@@ -43,8 +43,9 @@ async def test_a_scanned_link_is_said_in_words_with_its_values_named(hass: HomeA
     assert outputs[(DIMMER, 1)]["controlled_by"][0]["links"] == [
         {
             "mode": "M01 (Dim on/off (2 buttons))",
-            "does": "Two keys: a short press on the upper one switches the output on at its last level, "
-            "on the lower one off; holding either dims up or down. Dimming on takes 4 s, dimming off 1 s.",
+            # The link is on key 1C, an upper key.
+            "does": "A short press on this key switches the output on at its last level, holding it dims up; "
+            "the lower key of the pair switches off and dims down. Dimming on takes 4 s, dimming off 1 s.",
             "dim_on_time": "4 s",
             "dim_off_time": "1 s",
         }
@@ -188,3 +189,42 @@ async def test_an_output_names_the_scenes_it_is_part_of(
     described = await hass.services.async_call(DOMAIN, "describe", {}, blocking=True, return_response=True)
     output = next(o for o in described["outputs"] if (o["module"], o["channel"]) == (SWITCH, 5))
     assert output["scenes"] == [{"address": KEY_SCENE, "name": name, "entity_id": entity_id}]
+
+
+async def test_an_entity_shows_what_it_is_on_the_bus(
+    hass: HomeAssistant, hass_storage: dict[str, Any], scanned: SetupFixture
+) -> None:
+    """The details the Nikobus integration shows on its entities, from the links the scan read."""
+    hass_storage[f"{DOMAIN}.{ENTRY_ID}"]["data"]["names"] = {
+        "scenes": [{"name": "Dinner", "members": [[SWITCH, 5, "M14"], [SWITCH, 9, "M14"]]}]
+    }
+    await scanned()
+    relay = hass.states.get("switch.switch_module_4707_output_1").attributes
+    assert (relay["nikobus_address"], relay["channel"], relay["module_description"], relay["module_model"]) == (
+        SWITCH,
+        1,
+        "Switch module",
+        "05-000-02",
+    )
+    shutter = hass.states.get("cover.roller_shutter_module_9105_output_1").attributes
+    # The run time of the link, 30 s, for both ways; the margin is the default.
+    assert (shutter["operation_time_up"], shutter["operation_time_down"], shutter["end_stop_margin"]) == (30, 30, 3.0)
+    assert (shutter["nikobus_address"], shutter["movement_source"]) == (ROLLER, None)
+    key = hass.states.get(KEY_EVENT).attributes
+    assert (key["wall_button_address"], key["wall_button_key"], key["wall_button_model"]) == (PLATE, "1C", "05-064")
+    assert key["linked_outputs"] == [
+        {
+            "module": "Switch module (4707)",
+            "channel": 1,
+            "name": None,
+            "mode": "M05 (Impulse)",
+            "does": "Each press switches the output over, on or off.",
+        }
+    ]
+    scene = hass.states.get("scene.dinner").attributes
+    assert (scene["bus_address"], scene["member_count"]) == (KEY_SCENE, 2)
+    assert scene["triggered_by"] == [f"Bus push button, 4 control buttons #N037234 1C ({KEY_SCENE})"]
+    assert [(o["module"], o["channel"], o["mode"]) for o in scene["outputs"]] == [
+        ("Switch module (4707)", 5, "M14 (Light scene on)"),
+        ("Switch module (4707)", 9, "M14 (Light scene on)"),
+    ]

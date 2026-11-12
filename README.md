@@ -5,10 +5,10 @@
   <img src="https://img.shields.io/badge/Home%20Assistant-Nikobus%20NG-blue?style=flat&logo=homeassistant" alt="Nikobus NG for Home Assistant">
   <a href="https://hacs.xyz"><img src="https://img.shields.io/badge/HACS-Custom-orange?style=flat" alt="HACS Custom"></a>
   <img src="https://img.shields.io/badge/Status-Experimental-red?style=flat" alt="Experimental">
-  <a href="https://github.com/fdebrus/Nikobus-NG"><img src="https://img.shields.io/badge/Maintained%20by-fdebrus-green?style=flat" alt="Maintainer"></a>
-  <a href="https://github.com/fdebrus/Nikobus-NG/releases"><img src="https://img.shields.io/github/v/release/fdebrus/Nikobus-NG?style=flat&label=Release" alt="Latest release"></a>
-  <a href="https://github.com/fdebrus/Nikobus-NG/issues"><img src="https://img.shields.io/github/issues/fdebrus/Nikobus-NG?style=flat&label=Issues" alt="Open issues"></a>
-  <a href="https://github.com/fdebrus/Nikobus-NG/stargazers"><img src="https://img.shields.io/github/stars/fdebrus/Nikobus-NG?style=flat&label=Stars" alt="GitHub stars"></a>
+  <a href="https://github.com/fdebrus/Nikobus_NG"><img src="https://img.shields.io/badge/Maintained%20by-fdebrus-green?style=flat" alt="Maintainer"></a>
+  <a href="https://github.com/fdebrus/Nikobus_NG/releases"><img src="https://img.shields.io/github/v/release/fdebrus/Nikobus_NG?style=flat&label=Release" alt="Latest release"></a>
+  <a href="https://github.com/fdebrus/Nikobus_NG/issues"><img src="https://img.shields.io/github/issues/fdebrus/Nikobus_NG?style=flat&label=Issues" alt="Open issues"></a>
+  <a href="https://github.com/fdebrus/Nikobus_NG/stargazers"><img src="https://img.shields.io/github/stars/fdebrus/Nikobus_NG?style=flat&label=Stars" alt="GitHub stars"></a>
 </p>
 
 Control your **Nikobus** installation from Home Assistant: switches, dimmers and shutters as native entities, every key as an event for your automations, and the wiring of the installation as data an AI assistant can read. Modules, plates and links are **read from the bus in one discovery**, and names, rooms and scenes come from your **`.nkb` project file**.
@@ -60,9 +60,9 @@ Coming from the Nikobus integration? See [Coming from Nikobus](#coming-from-niko
 
 ## Installation & setup
 
-1. Install through HACS with the button below, or add `https://github.com/fdebrus/Nikobus-NG` under *HACS → ⋮ → Custom repositories* as an *Integration*:
+1. Install through HACS with the button below, or add `https://github.com/fdebrus/Nikobus_NG` under *HACS → ⋮ → Custom repositories* as an *Integration*:
 
-   [![Add to HACS](https://img.shields.io/badge/HACS-Add%20Custom%20Repository-blue.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=fdebrus&repository=Nikobus-NG&category=integration)
+   [![Add to HACS](https://img.shields.io/badge/HACS-Add%20Custom%20Repository-blue.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=fdebrus&repository=Nikobus_NG&category=integration)
 
    Without HACS, copy `custom_components/nikobus_ng` into `config/custom_components`, under that exact name.
 2. Restart Home Assistant.
@@ -103,6 +103,8 @@ To change the connection itself, use **Reconfigure** on the entry.
 | The gateway | connection, discovery, programming and clock sensors; four buttons |
 
 Devices are filed by kind under the **Nikobus Bridge**: *Output modules*, *System modules*, *Wall buttons*, *Remotes*, *Interfaces*, *Scenes* and *Shutter groups*. A plate the project file names is shown as `11: Boudoir (Hall)`, a module as `Dimcontroller (Cellar)`.
+
+Each entity shows what it is on the bus in its attributes: an output its module, channel and the keys that drive it; a shutter its run times and end margin; a key its plate and the outputs it drives, with what each link does; a scene its outputs and the keys that trigger it.
 
 An output no key drives is created disabled; enable it if you use it from Home Assistant only. Deleting the device of a module or a plate leaves it out from then on, through later discoveries too.
 
@@ -148,7 +150,7 @@ A link is said in words, with its values under what they are instead of the vend
 }
 ```
 
-The wording is the library's, taken from the vendor's manuals. A two-key mode speaks of "the upper key" and "the lower key"; which key of the plate that is, is not stored in a link.
+The wording is the library's, taken from the vendor's manuals. A mode on two or four keys is said for the key the link is on: "This key switches the output on; the lower key of the pair switches it off." On a plate, keys A and C are the upper ones, B and D the lower ones.
 
 ---
 
@@ -285,7 +287,7 @@ The design started from a [review of the Nikobus integration](https://github.com
 
 ## Issues, discussion & legal
 
-**Bugs and requests:** [GitHub issues](https://github.com/fdebrus/Nikobus-NG/issues). The integration's *Download diagnostics* and a short description are what help most; the diagnostics hold addresses and counts, no names.
+**Bugs and requests:** [GitHub issues](https://github.com/fdebrus/Nikobus_NG/issues). The integration's *Download diagnostics* and a short description are what help most; the diagnostics hold addresses and counts, no names.
 
 **Questions:** the [Home Assistant community thread](https://community.home-assistant.io/t/custom-component-nikobus/732832) of the Nikobus integration.
 

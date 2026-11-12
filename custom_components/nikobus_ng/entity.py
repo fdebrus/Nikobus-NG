@@ -162,6 +162,8 @@ class ChannelEntity(NikobusEntity):
     """One output of a switch, dimmer or roller module."""
 
     _attr_translation_key = "output"
+    # The wiring does not change with the state: it is not worth a row per change.
+    _unrecorded_attributes = frozenset({"controlled_by"})
 
     def __init__(self, hub: NikobusHub, module: OutputModule, channel: int) -> None:
         super().__init__(hub)
@@ -181,6 +183,11 @@ class ChannelEntity(NikobusEntity):
             or inventory.is_linked(module.address, channel)
         )
         self._attr_extra_state_attributes = {
+            "nikobus_address": module.address,
+            "channel": channel,
+            "channel_description": name,
+            "module_description": inventory.device_name(module.address) or module.description,
+            "module_model": module.model or None,
             "controlled_by": [
                 *(inventory.key_label(key) for key in inventory.keys_driving(module.address, channel)),
                 *(

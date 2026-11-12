@@ -11,7 +11,7 @@ blueprint:
     another integration.
   domain: automation
   author: fdebrus
-  source_url: https://github.com/fdebrus/Nikobus-NG/blob/main/blueprints/automation/fdebrus/nikobus_ng_key_controls_entity.yaml
+  source_url: https://github.com/fdebrus/Nikobus_NG/blob/main/blueprints/automation/fdebrus/nikobus_ng_key_controls_entity.yaml
   homeassistant:
     min_version: "2024.10.0"
   input:

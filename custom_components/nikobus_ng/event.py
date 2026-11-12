@@ -38,6 +38,7 @@ class NikobusKeyEvent(NikobusEntity, EventEntity):
     _attr_device_class = EventDeviceClass.BUTTON
     _attr_event_types = EVENT_TYPES
     _attr_translation_key = "key"
+    _unrecorded_attributes = frozenset({"linked_outputs"})
 
     def __init__(self, hub: NikobusHub, key: Key) -> None:
         super().__init__(hub)
@@ -45,7 +46,18 @@ class NikobusKeyEvent(NikobusEntity, EventEntity):
         self._attr_unique_id = f"{key.bus_address}_event"
         self._attr_translation_placeholders = {"key": key.label}
         self._attr_device_info = plate_device(hub, key.plate, key.plate_entry)
-        self._attr_extra_state_attributes = {"bus_address": key.bus_address}
+        inventory = hub.inventory
+        attributes: dict[str, Any] = {
+            "bus_address": key.bus_address,
+            "wall_button_address": key.plate,
+            "wall_button_key": key.label,
+            "wall_button_model": key.plate_entry.get("model"),
+            "wall_button_type": key.plate_entry.get("type"),
+            "linked_outputs": inventory.linked_outputs(key),
+        }
+        if (scene := inventory.scenes.get(key.bus_address)) is not None:
+            attributes["triggers_scene"] = inventory.scene_name(scene) or key.bus_address
+        self._attr_extra_state_attributes = attributes
 
     async def async_added_to_hass(self) -> None:
         """Listen for the key's presses."""

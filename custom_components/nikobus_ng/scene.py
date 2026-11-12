@@ -41,6 +41,8 @@ async def async_setup_entry(
 class NikobusScene(NikobusEntity, Scene):
     """Activated on the bus the way its own key activates it: one telegram."""
 
+    _unrecorded_attributes = frozenset({"outputs", "triggered_by"})
+
     def __init__(self, hub: NikobusHub, address: str, record: dict[str, Any], name: str | None) -> None:
         super().__init__(hub)
         self._bus_address = str(record.get("bus_address") or address).upper()
@@ -59,9 +61,18 @@ class NikobusScene(NikobusEntity, Scene):
         self._triggers = sorted(
             {self._bus_address, *(str(frame).upper() for frame in record.get("triggered_by") or [])}
         )
+        inventory = hub.inventory
+        types = {module.address: module.module_type for module in inventory.output_modules()}
+        outputs = [
+            inventory.output_link(module, types.get(module), output)
+            for output in record.get("outputs") or []
+            if (module := str(output.get("module_address") or "").upper())
+        ]
         self._attr_extra_state_attributes = {
             "bus_address": self._bus_address,
-            "outputs": len(record.get("outputs") or []),
+            "member_count": len(outputs),
+            "triggered_by": [inventory.frame_label(frame) for frame in self._triggers],
+            "outputs": outputs,
         }
 
     async def async_added_to_hass(self) -> None:
