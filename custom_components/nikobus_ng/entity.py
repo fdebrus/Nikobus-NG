@@ -189,12 +189,12 @@ class ChannelEntity(NikobusEntity):
             "module_description": inventory.device_name(module.address) or module.description,
             "module_model": module.model or None,
             "controlled_by": [
-                *(inventory.key_label(key) for key in inventory.keys_driving(module.address, channel)),
+                *inventory.drivers(module.address, channel),
                 *(
-                    f"PC-Link calendar channel {label}"
+                    {"button": f"PC-Link calendar channel {label}"}
                     for label in inventory.calendar_channels_driving(module.address, channel)
                 ),
-            ]
+            ],
         }
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, module.address)},

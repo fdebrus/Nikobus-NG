@@ -17,6 +17,7 @@ from typing import Any
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.storage import Store
 from nikobus_connect.discovery import (
+    LinkMeaning,
     describe_link,
     find_operation_point,
     is_motion_detector,
@@ -538,15 +539,57 @@ class Inventory:
         """One link as an attribute shows it; said for the key it is on where that is known."""
         meaning = describe_link(module_type, output.get("mode"), output.get("t1"), output.get("t2"), key=key)
         channel = output.get("channel")
-        shown: dict[str, Any] = {
+        return {
             "module": self.module_label(address),
+            "module_address": address,
             "channel": channel,
             "name": self.channel_name(address, channel) if isinstance(channel, int) else None,
+            **self._link_details(output, meaning),
+        }
+
+    @staticmethod
+    def _link_details(output: dict[str, Any], meaning: LinkMeaning | None) -> dict[str, Any]:
+        """A link as the module holds it, and what that means.
+
+        The mode and the two values as the link scan read them, the
+        record itself, then the sentence and the values by what they are.
+        """
+        details: dict[str, Any] = {
             "mode": output.get("mode"),
+            "t1": output.get("t1"),
+            "t2": output.get("t2"),
+            "payload": output.get("payload"),
         }
         if meaning is not None:
-            shown["does"] = meaning.summary
-        return shown
+            details["does"] = meaning.summary
+            details.update(meaning.parameters)
+        return details
+
+    def drivers(self, address: str, channel: int) -> list[dict[str, Any]]:
+        """Every link to an output: the key it is on, and the link as the module holds it."""
+        module_type = self.module_type(address)
+        links = []
+        for key in self.keys_driving(address, channel):
+            point = key.plate_entry["operation_points"][key.label] or {}
+            for link in point.get("linked_modules") or []:
+                if str(link.get("module_address") or "").upper() != address.upper():
+                    continue
+                for output in link.get("outputs") or []:
+                    if output.get("channel") != channel:
+                        continue
+                    meaning = describe_link(
+                        module_type, output.get("mode"), output.get("t1"), output.get("t2"), key=key.label
+                    )
+                    links.append(
+                        {
+                            "button": self.key_label(key),
+                            "button_address": key.plate,
+                            "key": key.label,
+                            "bus_address": key.bus_address,
+                            **self._link_details(output, meaning),
+                        }
+                    )
+        return links
 
     def key_label(self, key: Key) -> str:
         """A key as a person would point at it: its plate, its face, its frame."""

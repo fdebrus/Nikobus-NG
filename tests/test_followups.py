@@ -77,7 +77,11 @@ async def test_an_output_names_the_keys_that_drive_it(hass: HomeAssistant, scann
     await scanned()
     driven = hass.states.get("switch.switch_module_4707_output_1").attributes["controlled_by"]
     assert len(driven) == 1
-    assert driven[0].endswith(f" 1C ({KEY_SWITCH_1})")
+    assert driven[0]["button"].endswith(f" 1C ({KEY_SWITCH_1})")
+    # The link as the module holds it: an impulse link carries no value.
+    assert (driven[0]["key"], driven[0]["bus_address"], driven[0]["mode"]) == ("1C", KEY_SWITCH_1, "M05 (Impulse)")
+    assert (driven[0]["t1"], driven[0]["t2"]) == (None, None)
+    assert len(driven[0]["payload"]) == 12
     assert hass.states.get("switch.switch_module_4707_output_2").attributes["controlled_by"] == []
     dump = await async_get_config_entry_diagnostics(hass, entry)
     links = dump["links"]
