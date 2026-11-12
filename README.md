@@ -131,8 +131,10 @@ started from, [nikobus-ng-review.md](https://github.com/fdebrus/Nikobus-HA/blob/
   Nikobus entities are parked, not deleted, and "Give back" undoes it. A
   key is a binary sensor there and an event entity here: the event
   entity takes the sensor's id under `event.`, with its name, area and
-  labels, and the sensor keeps its own id. It can be run again: what was
-  taken before is left alone. From Home Assistant 2026.11 the device's
+  labels, and the sensor keeps its own id. The LED keys and the shutter
+  run times set per output in the Nikobus integration are taken too,
+  where none is set here. It can be run again: what was taken before is
+  left alone. From Home Assistant 2026.11 the device's
   name is always shown in front of an entity's, so only the entity's own
   name is carried, not the whole name it was shown under.
 - **Labels by kind**, an option: "Nikobus Output", "Nikobus Button" and
@@ -162,7 +164,7 @@ started from, [nikobus-ng-review.md](https://github.com/fdebrus/Nikobus-HA/blob/
 
 | | Nikobus | Nikobus NG |
 |---|---|---|
-| Python | 15 036 lines | 5 778 lines |
+| Python | 15 036 lines | 5 877 lines |
 | Output state | buffer, plus an optimistic copy per entity | the buffer; entities are views |
 | Structure | one coordinator of 3 600 lines | hub, discovery, presses, inventory |
 | Discovery | two buttons, in order | one action, automatic on first setup |
@@ -172,7 +174,7 @@ started from, [nikobus-ng-review.md](https://github.com/fdebrus/Nikobus-HA/blob/
 | Gone modules and plates | two actions: detect, then purge | a repair when a module stops answering; delete the device |
 | PC-Link clock | a timestamp sensor, read every hour | the same, with how far it is off as an attribute, and a button |
 | Settings | 17 options steps | a menu: gateway, lights and fans, a roller output, LED keys, a module's type, names, files |
-| Tests | 923, against a stub of Home Assistant | 147, against the real core and a simulated bus |
+| Tests | 923, against a stub of Home Assistant | 149, against the real core and a simulated bus |
 
 ## What it does not do
 
@@ -268,12 +270,12 @@ Assistant. Nothing of Home Assistant or of the library is replaced.
 
 | File | Lines | |
 |---|---|---|
-| `hub.py` | 720 | the connection, output state, commands, LED keys, polling, reconnection |
-| `config_flow.py` | 621 | setup, reconfigure, the options menu, the uploads |
+| `hub.py` | 722 | the connection, output state, commands, LED keys, polling, reconnection |
+| `config_flow.py` | 632 | setup, reconfigure, the options menu, the uploads |
 | `inventory.py` | 615 | the store, and every question asked of it |
 | `maintenance.py` | 420 | the clock, the programming checks, the backup |
 | `cover.py` | 364 | shutters, their position, shutter groups |
 | `discovery.py` | 241 | one discovery run, of everything or of one module |
 | `describe.py` | 258 | the installation as data, for a person or a model |
-| `takeover.py` | 272 | taking over the Nikobus integration's entities, and giving them back |
-| the rest | 2 267 | the platforms, presses, repairs, actions, the LLM tools, the hand-written files, diagnostics |
+| `takeover.py` | 346 | taking over the Nikobus integration's entities, and giving them back |
+| the rest | 2 279 | the platforms, presses, repairs, actions, the LLM tools, the hand-written files, diagnostics |

@@ -67,7 +67,14 @@ from .const import (
 )
 from .inventory import Inventory
 from .manual import inventory_from_files
-from .takeover import give_back, has_old_entities, make_plan, old_entry_blocks
+from .takeover import (
+    async_nikobus_settings,
+    give_back,
+    has_old_entities,
+    make_plan,
+    merged_options,
+    old_entry_blocks,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -246,11 +253,12 @@ class NikobusOptionsFlow(OptionsFlowWithReload):
         steps.append("names")
         if inventory.is_empty or inventory.from_project:
             steps.append("files")
-        # Offered again while something is left to take: an earlier version took no keys.
+        # Offered again while something is left to take: an earlier version took no keys, and no settings.
+        hub = self.config_entry.runtime_data
         if (
             has_old_entities(self.hass)
             and not inventory.is_empty
-            and make_plan(self.hass, self.config_entry.runtime_data).entities
+            and (make_plan(self.hass, hub).entities or await async_nikobus_settings(self.hass, hub))
         ):
             steps.append("take_over")
         if inventory.takeover["done"]:
@@ -515,13 +523,14 @@ class NikobusOptionsFlow(OptionsFlowWithReload):
         if old_entry_blocks(self.hass):
             return self.async_abort(reason="nikobus_running")
         plan = make_plan(self.hass, hub)
+        settings = await async_nikobus_settings(self.hass, hub)
         if user_input is not None:
             inventory = self._inventory()
             inventory.takeover["pending"] = plan.entities
             await inventory.async_save()
             # The ids move when the entry has reloaded, whether or not an option changed.
             self.hass.config_entries.async_schedule_reload(self.config_entry.entry_id)
-            return self._save(**plan.options)
+            return self._save(**merged_options(plan, settings, hub))
         now_lights = set(hub.light_outputs)
         return self.async_show_form(
             step_id="take_over",
@@ -530,6 +539,8 @@ class NikobusOptionsFlow(OptionsFlowWithReload):
                 "entities": str(len(plan.entities)),
                 "left": str(plan.left),
                 "lights": str(len(set(plan.options[CONF_LIGHT_OUTPUTS]) - now_lights)),
+                "led_keys": str(len(settings.led_keys)),
+                "run_times": str(len(settings.shutters)),
             },
         )
 

@@ -28,11 +28,15 @@ from typing import TYPE_CHECKING, Any
 
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import entity_registry as er
+from homeassistant.helpers.storage import STORAGE_DIR
+from homeassistant.util.json import load_json
 
 from .const import (
     CONF_FAN_OUTPUTS,
+    CONF_LED_KEYS,
     CONF_LIGHT_OUTPUTS,
     CONF_SHUTTERS,
     CONF_USE_AS,
@@ -41,6 +45,7 @@ from .const import (
     ROLLER_MODULE,
     SWITCH_MODULE,
 )
+from .manual import led_keys_of, run_times_of
 
 if TYPE_CHECKING:
     from .hub import NikobusHub
@@ -48,6 +53,9 @@ if TYPE_CHECKING:
 _LOGGER = logging.getLogger(__name__)
 
 OLD_DOMAIN = "nikobus"
+#: Where the Nikobus integration keeps its modules, with what is set per output.
+OLD_MODULE_STORE = "nikobus.modules"
+_KEY = re.compile(r"^[0-9A-F]{6}$")
 #: What a parked Nikobus entity's id ends in.
 PARKED = "_nikobus"
 
@@ -74,6 +82,72 @@ class Plan:
     options: dict[str, Any] = field(default_factory=dict)
     #: Nikobus entities with no counterpart here: its bridge's own, and what the inventory lacks.
     left: int = 0
+
+
+@dataclass(slots=True)
+class Settings:
+    """What the Nikobus integration holds per output and this integration does not."""
+
+    #: ``{"<module>:<channel>": {"on_key", "off_key"}}`` to add to the LED keys.
+    led_keys: dict[str, dict[str, str]] = field(default_factory=dict)
+    #: ``{"<module>:<channel>": {"open_time", "close_time", "end_margin"}}`` to add to the shutters.
+    shutters: dict[str, dict[str, float]] = field(default_factory=dict)
+
+    def __bool__(self) -> bool:
+        return bool(self.led_keys or self.shutters)
+
+
+async def async_nikobus_settings(hass: HomeAssistant, hub: NikobusHub) -> Settings:
+    """The LED keys and shutter run times set in the Nikobus integration, where none is set here.
+
+    They are in its module store, per output, not in any registry. The
+    store is read as the file it is, and never written. What is already
+    set here is left as it is.
+    """
+    try:
+        stored = await hass.async_add_executor_job(load_json, hass.config.path(STORAGE_DIR, OLD_MODULE_STORE))
+    except HomeAssistantError:
+        # Not a file that can be read: there is nothing to take from it.
+        return Settings()
+    data = stored.get("data") if isinstance(stored, dict) else None
+    modules = data.get("nikobus_module") if isinstance(data, dict) else None
+    settings = Settings()
+    if not isinstance(modules, dict):
+        return settings
+    for module in hub.inventory.output_modules():
+        entry = modules.get(module.address) or modules.get(module.address.lower())
+        channels = entry.get("channels") if isinstance(entry, dict) else None
+        if not isinstance(channels, list):
+            continue
+        for number, channel in enumerate(channels[: module.channels], start=1):
+            if not isinstance(channel, dict):
+                continue
+            output = f"{module.address}:{number}"
+            led = {
+                option: key
+                for option, key in led_keys_of(channel).items()
+                if _KEY.match(key)
+            }
+            if led and output not in hub.led_keys:
+                settings.led_keys[output] = led
+            if module.module_type != ROLLER_MODULE:
+                continue
+            mine = hub.shutters.get(output, {})
+            if times := {option: value for option, value in run_times_of(channel).items() if option not in mine}:
+                settings.shutters[output] = times
+    return settings
+
+
+def merged_options(plan: Plan, settings: Settings, hub: NikobusHub) -> dict[str, Any]:
+    """The options a take-over saves: the plan's, with the Nikobus integration's settings filled in."""
+    shutters = {output: dict(values) for output, values in plan.options[CONF_SHUTTERS].items()}
+    for output, times in settings.shutters.items():
+        shutters[output] = {**times, **shutters.get(output, {})}
+    return {
+        **plan.options,
+        CONF_SHUTTERS: shutters,
+        CONF_LED_KEYS: {**settings.led_keys, **hub.led_keys},
+    }
 
 
 def old_entry_blocks(hass: HomeAssistant) -> bool:

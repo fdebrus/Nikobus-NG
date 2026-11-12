@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from types import SimpleNamespace
 from typing import Any
+from unittest.mock import patch
 
 import pytest
 from homeassistant.config_entries import ConfigEntryState
@@ -23,6 +24,7 @@ from .conftest import (
     KEY_SCENE,
     KEY_SWITCH_1,
     PLATE,
+    ROLLER,
     SWITCH,
     SetupFixture,
     WallSimulator,
@@ -159,7 +161,13 @@ async def test_a_take_over_moves_ids_names_areas_and_exposure_and_can_be_undone(
     result = await _options(hass, entry, {"next_step_id": "take_over"})
     # As an output no key drives is created on a new installation: disabled.
     registry.async_update_entity("switch.switch_module_4707_output_3", disabled_by=er.RegistryEntryDisabler.INTEGRATION)
-    assert result["description_placeholders"] == {"entities": "5", "left": "1", "lights": "2"}
+    assert result["description_placeholders"] == {
+        "entities": "5",
+        "left": "1",
+        "lights": "2",
+        "led_keys": "0",
+        "run_times": "0",
+    }
     # Nothing has moved yet: the form only says what would.
     assert registry.async_get("light.kitchen_ceiling").platform == "nikobus"
     result = await hass.config_entries.options.async_configure(result["flow_id"], {})
@@ -282,3 +290,68 @@ async def test_an_entity_an_earlier_take_over_left_disabled_is_enabled(
     await hass.config_entries.async_reload(entry.entry_id)
     await _reloaded(hass, entry, hub)
     assert registry.async_get(mine).disabled_by is None
+
+
+#: The module store of the Nikobus integration, as its documentation gives its shape.
+NIKOBUS_MODULES = {
+    "version": 1,
+    "key": "nikobus.modules",
+    "data": {
+        "nikobus_module": {
+            SWITCH: {
+                "module_type": "switch_module",
+                "channels": [
+                    {"description": "Hall", "led_on": KEY_SWITCH_1.lower(), "led_off": KEY_SWITCH_1.lower()},
+                    {"description": "Kitchen", "led_on": "not a key"},
+                    *({"description": ""} for _ in range(10)),
+                ],
+            },
+            ROLLER: {
+                "module_type": "roller_module",
+                "channels": [
+                    {"operation_time_up": "24", "operation_time_down": 26.5, "end_stop_margin": "4"},
+                    {"operation_time_up": 31, "operation_time_down": 33},
+                    *({} for _ in range(4)),
+                ],
+            },
+        }
+    },
+}
+
+
+async def test_led_keys_and_run_times_set_in_nikobus_are_taken_where_none_is_set_here(
+    hass: HomeAssistant, setup: SetupFixture, entry: MockConfigEntry
+) -> None:
+    """The store is the file the Nikobus integration writes; here its content is handed over in its place."""
+    _nikobus_entities(hass)
+    hass.config_entries.async_update_entry(
+        entry, options={**entry.options, "shutters": {f"{ROLLER}:2": {"open_time": 12.0}}}
+    )
+    hub = await setup()
+    with patch("custom_components.nikobus_ng.takeover.load_json", return_value=NIKOBUS_MODULES):
+        result = await _options(hass, entry, {"next_step_id": "take_over"})
+        assert (result["description_placeholders"]["led_keys"], result["description_placeholders"]["run_times"]) == ("1", "2")
+        result = await hass.config_entries.options.async_configure(result["flow_id"], {})
+    assert result["type"] is FlowResultType.CREATE_ENTRY
+    taken = await _reloaded(hass, entry, hub)
+    # A key address is taken in capitals; what is not one is left out.
+    assert taken.led_keys == {f"{SWITCH}:1": {"on_key": KEY_SWITCH_1, "off_key": KEY_SWITCH_1}}
+    assert taken.shutters[f"{ROLLER}:1"] == {"open_time": 24.0, "close_time": 26.5, "end_margin": 4.0}
+    # The opening time set here stays; the closing time it lacked is filled in.
+    assert taken.shutters[f"{ROLLER}:2"] == {"open_time": 12.0, "close_time": 33.0}
+
+
+async def test_a_take_over_is_offered_for_settings_alone(
+    hass: HomeAssistant, setup: SetupFixture, entry: MockConfigEntry
+) -> None:
+    """An installation whose entities were all taken by an earlier version still has its settings to take."""
+    old = MockConfigEntry(domain="nikobus", title="Nikobus")
+    old.add_to_hass(hass)
+    er.async_get(hass).async_get_or_create("sensor", "nikobus", "nikobus_pc_link_clock", config_entry=old)
+    await setup()
+    menu = await hass.config_entries.options.async_init(entry.entry_id)
+    assert "take_over" not in menu["menu_options"]
+    hass.config_entries.options.async_abort(menu["flow_id"])
+    with patch("custom_components.nikobus_ng.takeover.load_json", return_value=NIKOBUS_MODULES):
+        menu = await hass.config_entries.options.async_init(entry.entry_id)
+    assert "take_over" in menu["menu_options"]

@@ -41,6 +41,27 @@ def _seconds(value: Any) -> float | None:
     return seconds if seconds > 0 else None
 
 
+def led_keys_of(channel: dict[str, Any]) -> dict[str, str]:
+    """The LED keys the Nikobus integration holds for an output, as the option here holds them."""
+    return {
+        option: str(channel[field]).strip().upper()
+        for option, field in ((CONF_ON_KEY, "led_on"), (CONF_OFF_KEY, "led_off"))
+        if str(channel.get(field) or "").strip()
+    }
+
+
+def run_times_of(channel: dict[str, Any]) -> dict[str, float]:
+    """The run times and end margin the Nikobus integration holds for a shutter output."""
+    settings: dict[str, float] = {}
+    both = _seconds(channel.get("operation_time"))
+    for option, field in ((CONF_OPEN_TIME, "operation_time_up"), (CONF_CLOSE_TIME, "operation_time_down")):
+        if seconds := _seconds(channel.get(field)) or both:
+            settings[option] = seconds
+    if (margin := channel.get("end_stop_margin")) not in (None, ""):
+        settings[CONF_END_MARGIN] = float(str(margin).replace(",", "."))
+    return settings
+
+
 def inventory_from_files(modules: Any, buttons: Any) -> tuple[NkbConfig, dict[str, Any], dict[str, Any]]:
     """``(inventory, names, options)`` from the two files' contents.
 
@@ -77,23 +98,14 @@ def inventory_from_files(modules: Any, buttons: Any) -> tuple[NkbConfig, dict[st
                     lights.append(output)
                 elif module_type == DIMMER_MODULE and kind == "fan":
                     fans.append(output)
-                if led := {
-                    option: str(channel[field]).strip().upper()
-                    for option, field in ((CONF_ON_KEY, "led_on"), (CONF_OFF_KEY, "led_off"))
-                    if str(channel.get(field) or "").strip()
-                }:
+                if led := led_keys_of(channel):
                     led_keys[output] = led
                 if module_type != ROLLER_MODULE:
                     continue
                 settings: dict[str, Any] = {}
                 if kind in (USE_AS_SWITCH, USE_AS_LIGHT):
                     settings[CONF_USE_AS] = kind
-                both = _seconds(channel.get("operation_time"))
-                for option, field in ((CONF_OPEN_TIME, "operation_time_up"), (CONF_CLOSE_TIME, "operation_time_down")):
-                    if seconds := _seconds(channel.get(field)) or both:
-                        settings[option] = seconds
-                if (margin := channel.get("end_stop_margin")) not in (None, ""):
-                    settings[CONF_END_MARGIN] = float(str(margin).replace(",", "."))
+                settings.update(run_times_of(channel))
                 if settings:
                     shutters[output] = settings
             module_config.setdefault(module_type, []).append(
