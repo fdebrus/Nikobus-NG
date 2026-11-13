@@ -95,6 +95,8 @@ class NikobusKeyButton(NikobusEntity, ButtonEntity):
         self._bus_address = key.bus_address
         self._attr_unique_id = f"{key.bus_address}_press"
         self._attr_translation_placeholders = {"key": key.label}
+        if key.position is not None:
+            self._attr_translation_key = f"press_key_{key.position}"
         self._attr_device_info = plate_device(hub, key.plate, key.plate_entry)
 
     async def async_added_to_hass(self) -> None:

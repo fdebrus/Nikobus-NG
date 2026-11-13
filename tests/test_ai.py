@@ -33,7 +33,7 @@ from .conftest import (
 from .test_remaining import _options, _reloaded
 
 SWITCH_1 = "switch.switch_module_4707_output_1"
-KEY_EVENT = "event.bus_push_button_4_control_buttons_n1843b4_key_1c"
+KEY_EVENT = "event.bus_push_button_4_control_buttons_n1843b4_key_1c_upper_right"
 
 
 async def _tool(hass: HomeAssistant, name: str, **args: Any) -> dict[str, Any]:

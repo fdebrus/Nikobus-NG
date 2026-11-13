@@ -12,7 +12,7 @@ from homeassistant.setup import async_setup_component
 from .conftest import KEY_SWITCH_1, SetupFixture, WallSimulator, wait_for
 
 BLUEPRINT = Path(__file__).parents[1] / "blueprints" / "automation" / "fdebrus" / "nikobus_ng_key_controls_entity.yaml"
-KEY = "event.bus_push_button_4_control_buttons_n1843b4_key_1c"
+KEY = "event.bus_push_button_4_control_buttons_n1843b4_key_1c_upper_right"
 TARGET = "input_boolean.other_relay"
 
 
