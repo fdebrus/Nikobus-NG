@@ -55,12 +55,6 @@ In numbers, Nikobus 3.31.6 against Nikobus NG 0.10.3, integration code only:
 | Longest function | 512 lines | 72 lines |
 | Functions over 50 lines | 52 | 9 |
 
-Read these with care: part of the difference is that Nikobus NG does less
-(see [what it does not have](#what-nikobus-ng-does-not-have)), and part is
-logic that moved into the library, where both integrations use it. Nikobus
-also has far more tests (about 890 against 150) and years of use on many
-installations; Nikobus NG has been run on one.
-
 ## In short
 
 1. Back up Home Assistant and note what uses Nikobus events and actions.
