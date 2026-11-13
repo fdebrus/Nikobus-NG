@@ -12,6 +12,49 @@ showed is noted where it matters.
 > Nikobus NG is experimental. Nikobus stays, and stays maintained. Move if you
 > want to try the new design, not because you have to.
 
+## Why a second integration
+
+Nikobus grew over years, one installation's report at a time. It works and
+it is maintained, but its structure carries that history. A
+[review of it](https://github.com/fdebrus/Nikobus-HA/blob/main/documentation/nikobus-ng-review.md)
+listed what a fresh start could do differently; Nikobus NG is that fresh
+start, on the same protocol library.
+
+What it changes:
+
+- **Entities hold no copy of the state.** An output shows what the module
+  last reported, with pending commands laid on top by the library. The
+  optimistic copies Nikobus keeps per entity were behind two regressions
+  (a light changing state three times per switch, fixed in 3.30.3 for
+  relays and in 3.31.4 for dimmers).
+- **Keys are `event` entities**, Home Assistant's own way to show a button
+  press, with one bus event instead of up to seven.
+- **A shutter's movement is timed by Home Assistant's interval timer**, one
+  tick per second while it moves, with the position calculation in the
+  library. Nikobus runs background tasks of its own for it. The cover
+  platform is 379 lines against 1,058.
+- **Discovery is one step**, started by itself at first setup, instead of two
+  buttons pressed in order.
+- **Every output gets an entity**, named or not; one no key drives is created
+  disabled.
+- **The wiring is available as data**: which key drives which output, in
+  which mode, for how long, in each entity's details, in the
+  `nikobus_ng.describe` action and as tools for an AI assistant.
+- **Tests run against the real Home Assistant core** and a simulated PC-Link.
+  Nikobus is tested against a stub of Home Assistant, which cannot notice
+  when the core changes.
+
+In numbers, Nikobus 3.31.6 against Nikobus NG 0.10.3, integration code only:
+
+| | Nikobus | Nikobus NG |
+|---|---|---|
+| Lines of Python | 15,037 | 6,009 |
+| of which code (no comments, docstrings, blank lines) | 9,648 | 4,468 |
+| Functions | 561 | 361 |
+| Longest file | 2,066 lines | 722 lines |
+| Longest function | 512 lines | 72 lines |
+| Functions over 50 lines | 52 | 9 |
+
 ## In short
 
 1. Back up Home Assistant and note what uses Nikobus events and actions.
