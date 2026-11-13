@@ -10,7 +10,7 @@ runs on the same protocol library,
 
 ```bash
 pip install -r requirements_test.txt   # Python 3.14; installs Home Assistant and nikobus-simulator
-python -m pytest -q                    # ~150 tests, 7 to 8 minutes, no hardware needed
+python -m pytest -q                    # ~155 tests, 7 to 8 minutes, no hardware needed
 ruff check .                           # must be clean; CI pins ruff 0.17.3
 ```
 

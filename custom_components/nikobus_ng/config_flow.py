@@ -54,6 +54,7 @@ from .const import (
     CONF_PRESS_REPEAT,
     CONF_SHUTTERS,
     CONF_USE_AS,
+    COVER_DEFAULT_RUN_TIME,
     COVER_END_MARGIN,
     DEFAULT_PRESS_REPEAT,
     DIMMER_MODULE,
@@ -241,16 +242,16 @@ class NikobusOptionsFlow(OptionsFlowWithReload):
         if self.config_entry.state is not ConfigEntryState.LOADED:
             return self.async_abort(reason="not_loaded")
         inventory = self._inventory()
-        steps = ["gateway"]
+        steps = ["names"]
         if _output_options(inventory, SWITCH_MODULE, DIMMER_MODULE):
             steps.append("outputs")
         if _output_options(inventory, ROLLER_MODULE):
             steps.append("shutter")
         if _output_options(inventory, *OUTPUT_MODULE_TYPES):
             steps.append("led_key")
+        steps.append("gateway")
         if inventory.addresses():
             steps.append("module_type")
-        steps.append("names")
         if inventory.is_empty or inventory.from_project:
             steps.append("files")
         # Offered again while something is left to take: an earlier version took no keys, and no settings.
@@ -464,19 +465,35 @@ class NikobusOptionsFlow(OptionsFlowWithReload):
     ) -> ConfigFlowResult:
         """What the output drives, and how long the shutter takes each way.
 
-        A time left empty is the one the module's own links hold.
+        The form shows the values in use; one cleared is the default again:
+        for a time, the one the module's own links hold.
         """
         shutters: dict[str, dict[str, Any]] = dict(self.config_entry.options.get(CONF_SHUTTERS, {}))
+        current = shutters.get(self._shutter, {})
+        address, _, channel = self._shutter.partition(":")
+        inventory = self._inventory()
+        from_links = {
+            direction: inventory.run_time(address, int(channel), direction) for direction in ("up", "down")
+        }
+        open_default = from_links["up"] or COVER_DEFAULT_RUN_TIME
         if user_input is not None:
-            settings = {key: value for key, value in user_input.items() if value not in (None, "")}
+            # Only what differs from the default is kept, so a time the links hold is followed when they change.
+            defaults = {
+                CONF_OPEN_TIME: open_default,
+                CONF_CLOSE_TIME: from_links["down"] or user_input.get(CONF_OPEN_TIME) or open_default,
+                CONF_END_MARGIN: COVER_END_MARGIN,
+            }
+            settings = {
+                key: value
+                for key, value in user_input.items()
+                if value not in (None, "") and value != defaults.get(key)
+            }
             if settings == {CONF_USE_AS: USE_AS_COVER}:
                 shutters.pop(self._shutter, None)
             else:
                 shutters[self._shutter] = settings
             return self._save(**{CONF_SHUTTERS: shutters})
-        current = shutters.get(self._shutter, {})
-        address, _, channel = self._shutter.partition(":")
-        inventory = self._inventory()
+        open_time = current.get(CONF_OPEN_TIME, open_default)
         schema = vol.Schema(
             {
                 vol.Required(CONF_USE_AS, default=current.get(CONF_USE_AS, USE_AS_COVER)): SelectSelector(
@@ -484,14 +501,14 @@ class NikobusOptionsFlow(OptionsFlowWithReload):
                         options=list(USE_AS), translation_key=CONF_USE_AS, mode=SelectSelectorMode.LIST
                     )
                 ),
+                vol.Optional(CONF_OPEN_TIME, description={"suggested_value": open_time}): _SECONDS,
                 vol.Optional(
-                    CONF_OPEN_TIME, description={"suggested_value": current.get(CONF_OPEN_TIME)}
+                    CONF_CLOSE_TIME,
+                    description={"suggested_value": current.get(CONF_CLOSE_TIME, from_links["down"] or open_time)},
                 ): _SECONDS,
                 vol.Optional(
-                    CONF_CLOSE_TIME, description={"suggested_value": current.get(CONF_CLOSE_TIME)}
-                ): _SECONDS,
-                vol.Optional(
-                    CONF_END_MARGIN, description={"suggested_value": current.get(CONF_END_MARGIN)}
+                    CONF_END_MARGIN,
+                    description={"suggested_value": current.get(CONF_END_MARGIN, COVER_END_MARGIN)},
                 ): NumberSelector(
                     NumberSelectorConfig(
                         min=0, max=30, step=0.5, unit_of_measurement="s", mode=NumberSelectorMode.BOX
@@ -499,9 +516,6 @@ class NikobusOptionsFlow(OptionsFlowWithReload):
                 ),
             }
         )
-        from_links = {
-            direction: inventory.run_time(address, int(channel), direction) for direction in ("up", "down")
-        }
         return self.async_show_form(
             step_id="shutter_settings",
             data_schema=schema,

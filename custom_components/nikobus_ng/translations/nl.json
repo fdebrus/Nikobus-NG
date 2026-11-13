@@ -36,17 +36,29 @@
   "options": {
     "step": {
       "init": {
-        "title": "Nikobus-opties",
+        "title": "Instellingen Nikobus NG",
+        "description": "Alles hier is optioneel: de detectie heeft uw modules, uitgangen en toetsen al gevonden. Gebruik dit om Home Assistant te vertellen wat de bus niet kan zeggen.",
         "menu_options": {
+          "names": "Namen importeren (.nkb)",
+          "outputs": "Lampen en ventilatoren",
+          "shutter": "Looptijden van rolluiken",
+          "led_key": "LED's van drukknoppen synchroon houden",
           "gateway": "Gateway",
-          "outputs": "Lampen, ventilatoren en labels",
-          "shutter": "Een rolluikuitgang",
-          "led_key": "LED-toetsen van een uitgang",
-          "module_type": "Het type van een module",
-          "names": "Namen uit het projectbestand",
-          "files": "Inventaris uit twee bestanden",
-          "take_over": "Overnemen van de Nikobus-integratie",
-          "give_back": "Teruggeven aan de Nikobus-integratie"
+          "module_type": "Het type van een module corrigeren",
+          "files": "Inventarisbestanden importeren",
+          "take_over": "Overnemen van Nikobus",
+          "give_back": "Teruggeven aan Nikobus"
+        },
+        "menu_option_descriptions": {
+          "names": "De namen en ruimtes van modules, drukknoppen, uitgangen en scènes overnemen uit het project van uw Nikobus-software.",
+          "outputs": "Aangeven welke relais een lamp schakelen en welke dimmeruitgangen een ventilator aansturen, zodat ze lampen en ventilatoren worden in plaats van schakelaars en lampen.",
+          "shutter": "Instellen hoe lang een rolluik nodig heeft om te openen en te sluiten, of een rolluikuitgang voor iets anders dan een rolluik gebruiken.",
+          "led_key": "Een uitgang via een van zijn toetsen schakelen, zodat de LED op de drukknop volgt wanneer Home Assistant schakelt.",
+          "gateway": "Feedbackmodule, een oudere PC-Link, en hoeveel telegrammen een door Home Assistant verstuurde druk herhaalt.",
+          "module_type": "Voor een module die de detectie onder een verkeerd type geeft. Zelden nodig.",
+          "files": "Voor een installatie zonder PC-Link: de module- en drukknopbestanden van de Nikobus-integratie laden.",
+          "take_over": "Entiteits-ID's, namen en ruimtes van de Nikobus-integratie naar deze verplaatsen. Kan ongedaan worden gemaakt.",
+          "give_back": "De overname ongedaan maken: elke entiteit krijgt de ID terug die ze had."
         }
       },
       "gateway": {
@@ -63,7 +75,7 @@
         }
       },
       "shutter": {
-        "title": "Een rolluikuitgang",
+        "title": "Looptijden van rolluiken",
         "data": {
           "output": "Uitgang"
         },
@@ -72,8 +84,8 @@
         }
       },
       "shutter_settings": {
-        "title": "Een rolluikuitgang",
-        "description": "De koppelingen van de module laten deze uitgang {open} lopen om te openen en {close} om te sluiten. Laat een tijd leeg om die waarde te gebruiken. Een leeg gelaten eindmarge is {margin}.",
+        "title": "Looptijden van rolluiken",
+        "description": "De velden tonen wat nu wordt gebruikt. De koppelingen van de module laten deze uitgang {open} lopen om te openen en {close} om te sluiten, en de eindmarge is {margin} zolang u die niet wijzigt. Maak een veld leeg om naar die waarde terug te keren.",
         "data": {
           "use_as": "Ze stuurt",
           "open_time": "Tijd om volledig te openen",
@@ -88,7 +100,7 @@
         }
       },
       "names": {
-        "title": "Namen uit het projectbestand",
+        "title": "Namen importeren (.nkb)",
         "description": "Upload het .nkb-project van de Nikobus-software om de namen en ruimtes over te nemen die het bevat voor modules, bedieningen, uitgangen en lichtsferen. Namen die u in Home Assistant gaf, blijven behouden.",
         "data": {
           "project_file": "Projectbestand (.nkb)",
@@ -101,7 +113,8 @@
         }
       },
       "outputs": {
-        "title": "Lampen, ventilatoren en labels",
+        "title": "Lampen en ventilatoren",
+        "description": "Een relais kan niet zeggen wat het schakelt, en een dimmeruitgang niet of hij een lamp of een ventilator aanstuurt. Vink aan wat van toepassing is; de entiteiten veranderen na het herladen.",
         "data": {
           "light_outputs": "Relais die lampen zijn",
           "fan_outputs": "Dimmeruitgangen die ventilatoren zijn",
@@ -114,7 +127,7 @@
         }
       },
       "led_key": {
-        "title": "LED-toetsen van een uitgang",
+        "title": "LED's van drukknoppen synchroon houden",
         "data": {
           "output": "Uitgang"
         },
@@ -123,7 +136,7 @@
         }
       },
       "led_key_settings": {
-        "title": "LED-toetsen van een uitgang",
+        "title": "LED's van drukknoppen synchroon houden",
         "description": "De LED van een bediening volgt de telegrammen van haar toets, niet een uitgang die rechtstreeks wordt geschreven. Met een toets hier ingesteld schakelt Home Assistant de uitgang via die toets: het leest eerst de module en drukt niet als de uitgang al in de gewenste toestand is. De toetsen die aan deze uitgang gekoppeld zijn, worden voorgesteld; een ander adres kan worden ingetikt. Laat beide leeg om de uitgang opnieuw rechtstreeks te schrijven.",
         "data": {
           "on_key": "Toets die ze inschakelt",
@@ -135,7 +148,7 @@
         }
       },
       "module_type": {
-        "title": "Het type van een module",
+        "title": "Het type van een module corrigeren",
         "description": "Voor een module die de inventaris als een ander type bevat dan ze is. Haar entiteiten veranderen mee, en haar koppelingen worden vanzelf opnieuw gelezen zodra de integratie is herladen, want ze worden per type gedecodeerd. De keuze blijft behouden bij latere ontdekkingen.",
         "data": {
           "module": "Module",
@@ -146,7 +159,7 @@
         }
       },
       "files": {
-        "title": "Inventaris uit twee bestanden",
+        "title": "Inventarisbestanden importeren",
         "description": "Voor een installatie zonder PC-Link en zonder projectbestand: de twee bestanden van de Nikobus-integratie, één met de modules en hun uitgangen, één met de toetsen. Ze vervangen wat bekend is. Wat ze over een uitgang zeggen (lamp, ventilator, LED-toetsen, looptijden) wordt hier de overeenkomstige optie. Daarna worden de koppelingen uit de modules gelezen, wat enkele minuten duurt.",
         "data": {
           "module_file": "Modulebestand (nikobus_module_config.json)",
@@ -154,11 +167,11 @@
         }
       },
       "take_over": {
-        "title": "Overnemen van de Nikobus-integratie",
+        "title": "Overnemen van Nikobus",
         "description": "{entities} entiteiten van de Nikobus-integratie hebben hier een tegenhanger: haar lampen, schakelaars, rolluiken, ventilatoren, sferen, ingangsschakelaars en toetsen. Bij verzenden gaan van elk de entiteits-ID, de getoonde naam, de ruimte, de aliassen, de labels, het pictogram en de blootstelling aan spraakassistenten over naar de entiteit van deze integratie: dashboards, automatiseringen en geschiedenis blijven werken. {lights} relais worden hier lampen om overeen te komen.\n\nDe Nikobus-entiteiten blijven bewaard, geparkeerd onder hun ID gevolgd door `_nikobus`, en **Teruggeven** maakt alles ongedaan.\n\nWat de Nikobus-integratie per uitgang bewaart wordt ook overgenomen, waar hier niets is ingesteld: de led-toetsen van {led_keys} uitgangen, en de looptijden van {run_times} rolluiken.\n\nEen toets is daar een binaire sensor en hier een gebeurtenisentiteit. De gebeurtenisentiteit neemt de ID van de sensor over onder `event.`, met naam, ruimte en labels; de sensor behoudt zijn eigen ID. Automatiseringen die de sensor van een toets lezen, of die de busgebeurtenissen en acties van Nikobus bij naam gebruiken, moeten met de hand worden aangepast.\n\nNiet overgenomen: {left} andere Nikobus-entiteiten, vooral die van haar bridge.\n\nLaat het Nikobus-item uitgeschakeld: slechts één programma mag met de bus praten."
       },
       "give_back": {
-        "title": "Teruggeven aan de Nikobus-integratie",
+        "title": "Teruggeven aan Nikobus",
         "description": "{entities} entiteiten zijn overgenomen. Bij verzenden krijgt elke Nikobus-entiteit haar entiteits-ID terug, en krijgen de entiteiten van deze integratie de ID's die ze eerder hadden. Namen, ruimtes en aliassen blijven aan beide kanten zoals ze zijn."
       }
     },

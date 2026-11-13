@@ -36,17 +36,29 @@
   "options": {
     "step": {
       "init": {
-        "title": "Options Nikobus",
+        "title": "Paramètres Nikobus NG",
+        "description": "Tout ici est facultatif : la découverte a déjà trouvé vos modules, sorties et touches. Servez-vous-en pour dire à Home Assistant ce que le bus ne peut pas dire.",
         "menu_options": {
+          "names": "Importer les noms (.nkb)",
+          "outputs": "Lampes et ventilateurs",
+          "shutter": "Temps de course des volets",
+          "led_key": "Synchroniser les LED des boutons",
           "gateway": "Passerelle",
-          "outputs": "Lampes, ventilateurs et étiquettes",
-          "shutter": "Une sortie volet",
-          "led_key": "Touches LED d'une sortie",
-          "module_type": "Le type d'un module",
-          "names": "Noms du fichier projet",
-          "files": "Inventaire à partir de deux fichiers",
-          "take_over": "Reprendre de l'intégration Nikobus",
-          "give_back": "Rendre à l'intégration Nikobus"
+          "module_type": "Corriger le type d'un module",
+          "files": "Importer les fichiers d'inventaire",
+          "take_over": "Reprendre de Nikobus",
+          "give_back": "Rendre à Nikobus"
+        },
+        "menu_option_descriptions": {
+          "names": "Reprendre du projet de votre logiciel Nikobus les noms et les pièces des modules, boutons, sorties et scènes.",
+          "outputs": "Indiquer quels relais commutent une lampe et quelles sorties variateur pilotent un ventilateur, pour en faire des lumières et des ventilateurs au lieu d'interrupteurs et de lumières.",
+          "shutter": "Régler le temps qu'un volet met à s'ouvrir et à se fermer, ou utiliser une sortie volet pour autre chose qu'un volet.",
+          "led_key": "Commuter une sortie par l'une de ses touches, pour que la LED du bouton mural suive quand Home Assistant la commute.",
+          "gateway": "Module Feedback, PC-Link plus ancien, et nombre de télégrammes que répète un appui envoyé par Home Assistant.",
+          "module_type": "Pour un module que la découverte donne sous un mauvais type. Rarement nécessaire.",
+          "files": "Pour une installation sans PC-Link : charger les fichiers de modules et de boutons de l'intégration Nikobus.",
+          "take_over": "Déplacer vers cette intégration les ID d'entité, les noms et les pièces de l'intégration Nikobus. Peut être annulé.",
+          "give_back": "Annuler la reprise : chaque entité retrouve l'ID qu'elle avait."
         }
       },
       "gateway": {
@@ -63,7 +75,7 @@
         }
       },
       "shutter": {
-        "title": "Une sortie volet",
+        "title": "Temps de course des volets",
         "data": {
           "output": "Sortie"
         },
@@ -72,8 +84,8 @@
         }
       },
       "shutter_settings": {
-        "title": "Une sortie volet",
-        "description": "Les liens du module font tourner cette sortie {open} pour ouvrir et {close} pour fermer. Laissez un temps vide pour utiliser cette valeur. Une marge de fin de course laissée vide vaut {margin}.",
+        "title": "Temps de course des volets",
+        "description": "Les champs montrent ce qui est utilisé maintenant. Les liens du module font tourner cette sortie {open} pour ouvrir et {close} pour fermer, et la marge de fin de course est de {margin} tant que vous ne la changez pas. Videz un champ pour revenir à cette valeur.",
         "data": {
           "use_as": "Elle commande",
           "open_time": "Temps d'ouverture complète",
@@ -88,7 +100,7 @@
         }
       },
       "names": {
-        "title": "Noms du fichier projet",
+        "title": "Importer les noms (.nkb)",
         "description": "Envoyez le projet .nkb du logiciel Nikobus pour reprendre les noms et les pièces qu'il contient pour les modules, les plaques, les sorties et les ambiances lumineuses. Les noms donnés dans Home Assistant sont conservés.",
         "data": {
           "project_file": "Fichier projet (.nkb)",
@@ -101,7 +113,8 @@
         }
       },
       "outputs": {
-        "title": "Lampes, ventilateurs et étiquettes",
+        "title": "Lampes et ventilateurs",
+        "description": "Un relais ne peut pas dire ce qu'il commute, ni une sortie variateur si elle pilote une lampe ou un ventilateur. Cochez ce qui s'applique ; les entités changent après le rechargement.",
         "data": {
           "light_outputs": "Relais qui sont des lumières",
           "fan_outputs": "Sorties variateur qui sont des ventilateurs",
@@ -114,7 +127,7 @@
         }
       },
       "led_key": {
-        "title": "Touches LED d'une sortie",
+        "title": "Synchroniser les LED des boutons",
         "data": {
           "output": "Sortie"
         },
@@ -123,7 +136,7 @@
         }
       },
       "led_key_settings": {
-        "title": "Touches LED d'une sortie",
+        "title": "Synchroniser les LED des boutons",
         "description": "La LED d'une plaque suit les télégrammes de sa touche, pas une sortie écrite directement. Avec une touche définie ici, Home Assistant commute la sortie par cette touche : il lit d'abord le module et n'appuie pas si la sortie est déjà dans l'état voulu. Les touches liées à cette sortie sont proposées ; une autre adresse peut être saisie. Laissez les deux vides pour écrire de nouveau la sortie directement.",
         "data": {
           "on_key": "Touche qui l'allume",
@@ -135,7 +148,7 @@
         }
       },
       "module_type": {
-        "title": "Le type d'un module",
+        "title": "Corriger le type d'un module",
         "description": "Pour un module que l'inventaire contient sous un autre type que le sien. Ses entités changent en conséquence, et ses liens sont relus d'eux-mêmes une fois l'intégration rechargée, car ils sont décodés selon le type. Le choix est conservé lors des découvertes suivantes.",
         "data": {
           "module": "Module",
@@ -146,7 +159,7 @@
         }
       },
       "files": {
-        "title": "Inventaire à partir de deux fichiers",
+        "title": "Importer les fichiers d'inventaire",
         "description": "Pour une installation sans PC-Link ni fichier projet : les deux fichiers de l'intégration Nikobus, l'un listant les modules et leurs sorties, l'autre les touches. Ils remplacent ce qui est connu. Ce qu'ils disent d'une sortie (lumière, ventilateur, touches LED, temps de marche) devient l'option correspondante ici. Les liens sont ensuite lus dans les modules, ce qui prend quelques minutes.",
         "data": {
           "module_file": "Fichier des modules (nikobus_module_config.json)",
@@ -154,11 +167,11 @@
         }
       },
       "take_over": {
-        "title": "Reprendre de l'intégration Nikobus",
+        "title": "Reprendre de Nikobus",
         "description": "{entities} entités de l'intégration Nikobus ont un équivalent ici : ses lumières, interrupteurs, volets, ventilateurs, ambiances, interrupteurs d'entrée et touches. En validant, l'ID d'entité, le nom affiché, la pièce, les alias, les étiquettes, l'icône et l'exposition aux assistants vocaux de chacune passent sur l'entité de cette intégration : les tableaux de bord, les automatisations et l'historique continuent de fonctionner. {lights} relais deviennent des lumières ici pour correspondre.\n\nLes entités Nikobus sont conservées, rangées sous leur ID suivi de `_nikobus`, et **Rendre** annule le tout.\n\nCe que l'intégration Nikobus garde par sortie est repris aussi, là où rien n'est réglé ici : les touches LED de {led_keys} sorties, et les temps de course de {run_times} volets.\n\nUne touche est un capteur binaire là-bas et une entité événement ici. L'entité événement prend l'ID du capteur sous `event.`, avec son nom, sa pièce et ses étiquettes ; le capteur garde son propre ID. Les automatisations qui lisent le capteur d'une touche, ou qui utilisent par leur nom les événements et actions de Nikobus, doivent être modifiées à la main.\n\nNon repris : {left} autres entités Nikobus, surtout celles de son pont.\n\nLaissez l'entrée Nikobus désactivée : un seul programme peut parler au bus."
       },
       "give_back": {
-        "title": "Rendre à l'intégration Nikobus",
+        "title": "Rendre à Nikobus",
         "description": "{entities} entités ont été reprises. En validant, chaque entité Nikobus retrouve son ID d'entité, et les entités de cette intégration les ID qu'elles avaient avant. Les noms, pièces et alias restent tels quels des deux côtés."
       }
     },
