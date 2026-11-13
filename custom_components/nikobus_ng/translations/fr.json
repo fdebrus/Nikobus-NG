@@ -85,7 +85,7 @@
       },
       "shutter_settings": {
         "title": "Temps de course des volets",
-        "description": "Les liens du module font tourner cette sortie {open} pour ouvrir et {close} pour fermer. Laissez un temps vide pour utiliser cette valeur. Une marge de fin de course laissée vide vaut {margin}.",
+        "description": "Les champs montrent ce qui est utilisé maintenant. Les liens du module font tourner cette sortie {open} pour ouvrir et {close} pour fermer, et la marge de fin de course est de {margin} tant que vous ne la changez pas. Videz un champ pour revenir à cette valeur.",
         "data": {
           "use_as": "Elle commande",
           "open_time": "Temps d'ouverture complète",

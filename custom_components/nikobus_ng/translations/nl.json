@@ -85,7 +85,7 @@
       },
       "shutter_settings": {
         "title": "Looptijden van rolluiken",
-        "description": "De koppelingen van de module laten deze uitgang {open} lopen om te openen en {close} om te sluiten. Laat een tijd leeg om die waarde te gebruiken. Een leeg gelaten eindmarge is {margin}.",
+        "description": "De velden tonen wat nu wordt gebruikt. De koppelingen van de module laten deze uitgang {open} lopen om te openen en {close} om te sluiten, en de eindmarge is {margin} zolang u die niet wijzigt. Maak een veld leeg om naar die waarde terug te keren.",
         "data": {
           "use_as": "Ze stuurt",
           "open_time": "Tijd om volledig te openen",

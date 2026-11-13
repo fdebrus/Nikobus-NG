@@ -23,6 +23,7 @@ from pytest_homeassistant_custom_component.typing import (
 from custom_components.nikobus_ng.const import (
     CONF_FEEDBACK_MODULE,
     CONF_SHUTTERS,
+    COVER_END_MARGIN,
     DOMAIN,
 )
 
@@ -137,6 +138,31 @@ async def test_the_times_of_a_shutter_set_in_the_options_are_the_ones_used(hass:
     assert entry.options[CONF_SHUTTERS] == {f"{ROLLER}:2": settings}
     cover = hass.data["domain_entities"]["cover"]["cover.roller_shutter_module_9105_output_2"]
     assert (cover._travel.time_up, cover._travel.time_down, cover._end_margin) == (22, 19.5, 1.5)
+
+
+@pytest.mark.parametrize(
+    ("changed", "stored"),
+    [
+        pytest.param({}, {}, id="as-shown-nothing-is-stored"),
+        pytest.param({"end_margin": 5}, {f"{ROLLER}:2": {"use_as": "cover", "end_margin": 5}}, id="only-what-differs"),
+    ],
+)
+async def test_the_shutter_form_shows_what_is_in_use_and_keeps_only_what_differs(
+    hass: HomeAssistant, setup: SetupFixture, entry: MockConfigEntry, changed: dict[str, float], stored: dict[str, Any]
+) -> None:
+    await setup()
+    cover = hass.data["domain_entities"]["cover"]["cover.roller_shutter_module_9105_output_2"]
+    in_use = {"open_time": cover._travel.time_up, "close_time": cover._travel.time_down, "end_margin": COVER_END_MARGIN}
+    result = await hass.config_entries.options.async_init(entry.entry_id)
+    result = await hass.config_entries.options.async_configure(result["flow_id"], {"next_step_id": "shutter"})
+    result = await hass.config_entries.options.async_configure(result["flow_id"], {"output": f"{ROLLER}:2"})
+    shown = {str(field): field.description["suggested_value"] for field in result["data_schema"].schema if field.description}
+    assert shown == in_use
+
+    result = await hass.config_entries.options.async_configure(result["flow_id"], {"use_as": "cover", **in_use, **changed})
+    assert result["type"] is FlowResultType.CREATE_ENTRY
+    await hass.async_block_till_done()
+    assert entry.options.get(CONF_SHUTTERS, {}) == stored
 
 
 @pytest.mark.usefixtures("quick_timeouts")

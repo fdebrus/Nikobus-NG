@@ -85,7 +85,7 @@
       },
       "shutter_settings": {
         "title": "Shutter run times",
-        "description": "The module's own links run this output {open} to open and {close} to close. Leave a time empty to use that. An end margin left empty is {margin}.",
+        "description": "The fields show what is in use now. The module's own links run this output {open} to open and {close} to close, and the end margin is {margin} unless you change it. Clear a field to go back to that value.",
         "data": {
           "use_as": "It drives",
           "open_time": "Time to open fully",
