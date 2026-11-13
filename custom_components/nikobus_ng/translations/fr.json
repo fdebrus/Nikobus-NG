@@ -247,6 +247,136 @@
             }
           }
         }
+      },
+      "key_upper": {
+        "name": "Touche {key} · haut",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Appuyée",
+              "hold": "Maintenue",
+              "short_release": "Relâchée après un appui court",
+              "long_release": "Relâchée après un appui long"
+            }
+          }
+        }
+      },
+      "key_lower": {
+        "name": "Touche {key} · bas",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Appuyée",
+              "hold": "Maintenue",
+              "short_release": "Relâchée après un appui court",
+              "long_release": "Relâchée après un appui long"
+            }
+          }
+        }
+      },
+      "key_upper_left": {
+        "name": "Touche {key} · haut gauche",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Appuyée",
+              "hold": "Maintenue",
+              "short_release": "Relâchée après un appui court",
+              "long_release": "Relâchée après un appui long"
+            }
+          }
+        }
+      },
+      "key_lower_left": {
+        "name": "Touche {key} · bas gauche",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Appuyée",
+              "hold": "Maintenue",
+              "short_release": "Relâchée après un appui court",
+              "long_release": "Relâchée après un appui long"
+            }
+          }
+        }
+      },
+      "key_upper_right": {
+        "name": "Touche {key} · haut droite",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Appuyée",
+              "hold": "Maintenue",
+              "short_release": "Relâchée après un appui court",
+              "long_release": "Relâchée après un appui long"
+            }
+          }
+        }
+      },
+      "key_lower_right": {
+        "name": "Touche {key} · bas droite",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Appuyée",
+              "hold": "Maintenue",
+              "short_release": "Relâchée après un appui court",
+              "long_release": "Relâchée après un appui long"
+            }
+          }
+        }
+      },
+      "key_upper_mid_left": {
+        "name": "Touche {key} · haut centre gauche",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Appuyée",
+              "hold": "Maintenue",
+              "short_release": "Relâchée après un appui court",
+              "long_release": "Relâchée après un appui long"
+            }
+          }
+        }
+      },
+      "key_lower_mid_left": {
+        "name": "Touche {key} · bas centre gauche",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Appuyée",
+              "hold": "Maintenue",
+              "short_release": "Relâchée après un appui court",
+              "long_release": "Relâchée après un appui long"
+            }
+          }
+        }
+      },
+      "key_upper_mid_right": {
+        "name": "Touche {key} · haut centre droit",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Appuyée",
+              "hold": "Maintenue",
+              "short_release": "Relâchée après un appui court",
+              "long_release": "Relâchée après un appui long"
+            }
+          }
+        }
+      },
+      "key_lower_mid_right": {
+        "name": "Touche {key} · bas centre droit",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Appuyée",
+              "hold": "Maintenue",
+              "short_release": "Relâchée après un appui court",
+              "long_release": "Relâchée après un appui long"
+            }
+          }
+        }
       }
     },
     "button": {
@@ -264,6 +394,36 @@
       },
       "set_clock": {
         "name": "Régler l'horloge du PC-Link"
+      },
+      "press_key_upper": {
+        "name": "Appuyer sur {key} · haut"
+      },
+      "press_key_lower": {
+        "name": "Appuyer sur {key} · bas"
+      },
+      "press_key_upper_left": {
+        "name": "Appuyer sur {key} · haut gauche"
+      },
+      "press_key_lower_left": {
+        "name": "Appuyer sur {key} · bas gauche"
+      },
+      "press_key_upper_right": {
+        "name": "Appuyer sur {key} · haut droite"
+      },
+      "press_key_lower_right": {
+        "name": "Appuyer sur {key} · bas droite"
+      },
+      "press_key_upper_mid_left": {
+        "name": "Appuyer sur {key} · haut centre gauche"
+      },
+      "press_key_lower_mid_left": {
+        "name": "Appuyer sur {key} · bas centre gauche"
+      },
+      "press_key_upper_mid_right": {
+        "name": "Appuyer sur {key} · haut centre droit"
+      },
+      "press_key_lower_mid_right": {
+        "name": "Appuyer sur {key} · bas centre droit"
       }
     },
     "sensor": {

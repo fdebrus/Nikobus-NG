@@ -45,6 +45,8 @@ class NikobusKeyEvent(NikobusEntity, EventEntity):
         self._bus_address = key.bus_address
         self._attr_unique_id = f"{key.bus_address}_event"
         self._attr_translation_placeholders = {"key": key.label}
+        if key.position is not None:
+            self._attr_translation_key = f"key_{key.position}"
         self._attr_device_info = plate_device(hub, key.plate, key.plate_entry)
         inventory = hub.inventory
         attributes: dict[str, Any] = {
@@ -55,6 +57,8 @@ class NikobusKeyEvent(NikobusEntity, EventEntity):
             "wall_button_type": key.plate_entry.get("type"),
             "linked_outputs": inventory.linked_outputs(key),
         }
+        if key.position is not None:
+            attributes["position"] = key.position
         if (scene := inventory.scenes.get(key.bus_address)) is not None:
             attributes["triggers_scene"] = inventory.scene_name(scene) or key.bus_address
         self._attr_extra_state_attributes = attributes

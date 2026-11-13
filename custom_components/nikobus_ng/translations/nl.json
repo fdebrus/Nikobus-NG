@@ -247,6 +247,136 @@
             }
           }
         }
+      },
+      "key_upper": {
+        "name": "Toets {key} · boven",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Ingedrukt",
+              "hold": "Vastgehouden",
+              "short_release": "Losgelaten na een korte druk",
+              "long_release": "Losgelaten na een lange druk"
+            }
+          }
+        }
+      },
+      "key_lower": {
+        "name": "Toets {key} · onder",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Ingedrukt",
+              "hold": "Vastgehouden",
+              "short_release": "Losgelaten na een korte druk",
+              "long_release": "Losgelaten na een lange druk"
+            }
+          }
+        }
+      },
+      "key_upper_left": {
+        "name": "Toets {key} · linksboven",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Ingedrukt",
+              "hold": "Vastgehouden",
+              "short_release": "Losgelaten na een korte druk",
+              "long_release": "Losgelaten na een lange druk"
+            }
+          }
+        }
+      },
+      "key_lower_left": {
+        "name": "Toets {key} · linksonder",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Ingedrukt",
+              "hold": "Vastgehouden",
+              "short_release": "Losgelaten na een korte druk",
+              "long_release": "Losgelaten na een lange druk"
+            }
+          }
+        }
+      },
+      "key_upper_right": {
+        "name": "Toets {key} · rechtsboven",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Ingedrukt",
+              "hold": "Vastgehouden",
+              "short_release": "Losgelaten na een korte druk",
+              "long_release": "Losgelaten na een lange druk"
+            }
+          }
+        }
+      },
+      "key_lower_right": {
+        "name": "Toets {key} · rechtsonder",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Ingedrukt",
+              "hold": "Vastgehouden",
+              "short_release": "Losgelaten na een korte druk",
+              "long_release": "Losgelaten na een lange druk"
+            }
+          }
+        }
+      },
+      "key_upper_mid_left": {
+        "name": "Toets {key} · boven midden-links",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Ingedrukt",
+              "hold": "Vastgehouden",
+              "short_release": "Losgelaten na een korte druk",
+              "long_release": "Losgelaten na een lange druk"
+            }
+          }
+        }
+      },
+      "key_lower_mid_left": {
+        "name": "Toets {key} · onder midden-links",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Ingedrukt",
+              "hold": "Vastgehouden",
+              "short_release": "Losgelaten na een korte druk",
+              "long_release": "Losgelaten na een lange druk"
+            }
+          }
+        }
+      },
+      "key_upper_mid_right": {
+        "name": "Toets {key} · boven midden-rechts",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Ingedrukt",
+              "hold": "Vastgehouden",
+              "short_release": "Losgelaten na een korte druk",
+              "long_release": "Losgelaten na een lange druk"
+            }
+          }
+        }
+      },
+      "key_lower_mid_right": {
+        "name": "Toets {key} · onder midden-rechts",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Ingedrukt",
+              "hold": "Vastgehouden",
+              "short_release": "Losgelaten na een korte druk",
+              "long_release": "Losgelaten na een lange druk"
+            }
+          }
+        }
       }
     },
     "button": {
@@ -264,6 +394,36 @@
       },
       "set_clock": {
         "name": "Klok van de PC-Link instellen"
+      },
+      "press_key_upper": {
+        "name": "{key} indrukken · boven"
+      },
+      "press_key_lower": {
+        "name": "{key} indrukken · onder"
+      },
+      "press_key_upper_left": {
+        "name": "{key} indrukken · linksboven"
+      },
+      "press_key_lower_left": {
+        "name": "{key} indrukken · linksonder"
+      },
+      "press_key_upper_right": {
+        "name": "{key} indrukken · rechtsboven"
+      },
+      "press_key_lower_right": {
+        "name": "{key} indrukken · rechtsonder"
+      },
+      "press_key_upper_mid_left": {
+        "name": "{key} indrukken · boven midden-links"
+      },
+      "press_key_lower_mid_left": {
+        "name": "{key} indrukken · onder midden-links"
+      },
+      "press_key_upper_mid_right": {
+        "name": "{key} indrukken · boven midden-rechts"
+      },
+      "press_key_lower_mid_right": {
+        "name": "{key} indrukken · onder midden-rechts"
       }
     },
     "sensor": {

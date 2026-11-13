@@ -21,6 +21,7 @@ from nikobus_connect.discovery import (
     describe_link,
     find_operation_point,
     is_motion_detector,
+    plate_key_position,
 )
 from nikobus_connect.discovery.store import (
     cf_cover_members,
@@ -71,6 +72,11 @@ class Key:
     label: str
     bus_address: str
     plate_entry: dict[str, Any]
+
+    @property
+    def position(self) -> str | None:
+        """Where the key sits on its wall plate, when it is one of a plate."""
+        return plate_key_position(self.plate_entry, self.label)
 
 
 class Inventory:

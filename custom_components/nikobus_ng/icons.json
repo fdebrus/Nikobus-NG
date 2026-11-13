@@ -15,10 +15,70 @@
       },
       "set_clock": {
         "default": "mdi:clock-check"
+      },
+      "press_key_upper": {
+        "default": "mdi:gesture-tap-button"
+      },
+      "press_key_lower": {
+        "default": "mdi:gesture-tap-button"
+      },
+      "press_key_upper_left": {
+        "default": "mdi:gesture-tap-button"
+      },
+      "press_key_lower_left": {
+        "default": "mdi:gesture-tap-button"
+      },
+      "press_key_upper_right": {
+        "default": "mdi:gesture-tap-button"
+      },
+      "press_key_lower_right": {
+        "default": "mdi:gesture-tap-button"
+      },
+      "press_key_upper_mid_left": {
+        "default": "mdi:gesture-tap-button"
+      },
+      "press_key_lower_mid_left": {
+        "default": "mdi:gesture-tap-button"
+      },
+      "press_key_upper_mid_right": {
+        "default": "mdi:gesture-tap-button"
+      },
+      "press_key_lower_mid_right": {
+        "default": "mdi:gesture-tap-button"
       }
     },
     "event": {
       "key": {
+        "default": "mdi:light-switch"
+      },
+      "key_upper": {
+        "default": "mdi:light-switch"
+      },
+      "key_lower": {
+        "default": "mdi:light-switch"
+      },
+      "key_upper_left": {
+        "default": "mdi:light-switch"
+      },
+      "key_lower_left": {
+        "default": "mdi:light-switch"
+      },
+      "key_upper_right": {
+        "default": "mdi:light-switch"
+      },
+      "key_lower_right": {
+        "default": "mdi:light-switch"
+      },
+      "key_upper_mid_left": {
+        "default": "mdi:light-switch"
+      },
+      "key_lower_mid_left": {
+        "default": "mdi:light-switch"
+      },
+      "key_upper_mid_right": {
+        "default": "mdi:light-switch"
+      },
+      "key_lower_mid_right": {
         "default": "mdi:light-switch"
       }
     },

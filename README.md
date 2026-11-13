@@ -104,6 +104,8 @@ To change the connection itself, use **Reconfigure** on the entry.
 
 Devices are filed by kind under the **Nikobus Bridge**: *Output modules*, *System modules*, *Wall buttons*, *Remotes*, *Interfaces*, *Scenes* and *Shutter groups*. A plate the project file names is shown as `11: Boudoir (Hall)`, a module as `Dimcontroller (Cellar)`.
 
+A key of a wall plate with two, four or eight keys is named with where it sits, "Key 1C · upper right", and carries it as its `position` attribute; the layouts are the vendor manual's drawings of the plates. Names you gave are kept, and entity IDs do not change.
+
 Each entity shows what it is on the bus in its attributes, with every link as the module holds it (`mode`, `t1`, `t2`, the record itself) next to what it does: an output its module, channel and the keys that drive it; a shutter its run times and end margin; a key its plate and the outputs it drives, with what each link does; a scene its outputs and the keys that trigger it.
 
 An output no key drives is created disabled; enable it if you use it from Home Assistant only. Deleting the device of a module or a plate leaves it out from then on, through later discoveries too.

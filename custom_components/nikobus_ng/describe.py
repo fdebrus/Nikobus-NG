@@ -98,6 +98,7 @@ class Describer:
             "plate": inventory.device_name(key.plate) or key.plate_entry.get("description") or key.plate,
             "plate_address": key.plate,
             "key": key.label,
+            "position": key.position,
             "address": key.bus_address,
             **self._entity(Platform.EVENT, f"{key.bus_address}_event"),
             "drives": [{**target, **link} for target, link in self._links_of(key)],

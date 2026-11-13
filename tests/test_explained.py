@@ -25,6 +25,7 @@ from .conftest import (
     KEY_DIMMER,
     KEY_ROLLER,
     KEY_SCENE,
+    KEY_SWITCH_1,
     PLATE,
     ROLLER,
     SWITCH,
@@ -32,7 +33,7 @@ from .conftest import (
 )
 from .test_remaining import _options, _reloaded
 
-KEY_EVENT = "event.bus_push_button_4_control_buttons_n1843b4_key_1c"
+KEY_EVENT = "event.bus_push_button_4_control_buttons_n1843b4_key_1c_upper_right"
 
 
 async def test_a_scanned_link_is_said_in_words_with_its_values_named(hass: HomeAssistant, scanned: SetupFixture) -> None:
@@ -238,3 +239,16 @@ async def test_an_entity_shows_what_it_is_on_the_bus(
         ("Switch module (4707)", 5, "M14 (Light scene on)"),
         ("Switch module (4707)", 9, "M14 (Light scene on)"),
     ]
+
+
+async def test_a_key_of_a_wall_plate_says_where_it_sits(hass: HomeAssistant, setup: SetupFixture) -> None:
+    """The simulated plates are four-key plates (05-064): 1C is the upper right key."""
+    await setup()
+    state = hass.states.get(KEY_EVENT)
+    assert state.name.endswith("Key 1C · upper right")
+    assert state.attributes["position"] == "upper_right"
+    registry = er.async_get(hass)
+    press = registry.async_get(registry.async_get_entity_id("button", DOMAIN, f"{KEY_SWITCH_1}_press"))
+    assert (press.translation_key, press.original_name) == ("press_key_upper_right", "Press 1C · upper right")
+    described = await hass.services.async_call(DOMAIN, "describe", {}, blocking=True, return_response=True)
+    assert next(k for k in described["keys"] if k["address"] == KEY_SWITCH_1)["position"] == "upper_right"

@@ -247,6 +247,136 @@
             }
           }
         }
+      },
+      "key_upper": {
+        "name": "Key {key} · upper",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Pressed",
+              "hold": "Held",
+              "short_release": "Released after a short press",
+              "long_release": "Released after a long press"
+            }
+          }
+        }
+      },
+      "key_lower": {
+        "name": "Key {key} · lower",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Pressed",
+              "hold": "Held",
+              "short_release": "Released after a short press",
+              "long_release": "Released after a long press"
+            }
+          }
+        }
+      },
+      "key_upper_left": {
+        "name": "Key {key} · upper left",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Pressed",
+              "hold": "Held",
+              "short_release": "Released after a short press",
+              "long_release": "Released after a long press"
+            }
+          }
+        }
+      },
+      "key_lower_left": {
+        "name": "Key {key} · lower left",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Pressed",
+              "hold": "Held",
+              "short_release": "Released after a short press",
+              "long_release": "Released after a long press"
+            }
+          }
+        }
+      },
+      "key_upper_right": {
+        "name": "Key {key} · upper right",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Pressed",
+              "hold": "Held",
+              "short_release": "Released after a short press",
+              "long_release": "Released after a long press"
+            }
+          }
+        }
+      },
+      "key_lower_right": {
+        "name": "Key {key} · lower right",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Pressed",
+              "hold": "Held",
+              "short_release": "Released after a short press",
+              "long_release": "Released after a long press"
+            }
+          }
+        }
+      },
+      "key_upper_mid_left": {
+        "name": "Key {key} · upper mid-left",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Pressed",
+              "hold": "Held",
+              "short_release": "Released after a short press",
+              "long_release": "Released after a long press"
+            }
+          }
+        }
+      },
+      "key_lower_mid_left": {
+        "name": "Key {key} · lower mid-left",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Pressed",
+              "hold": "Held",
+              "short_release": "Released after a short press",
+              "long_release": "Released after a long press"
+            }
+          }
+        }
+      },
+      "key_upper_mid_right": {
+        "name": "Key {key} · upper mid-right",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Pressed",
+              "hold": "Held",
+              "short_release": "Released after a short press",
+              "long_release": "Released after a long press"
+            }
+          }
+        }
+      },
+      "key_lower_mid_right": {
+        "name": "Key {key} · lower mid-right",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "pressed": "Pressed",
+              "hold": "Held",
+              "short_release": "Released after a short press",
+              "long_release": "Released after a long press"
+            }
+          }
+        }
       }
     },
     "button": {
@@ -264,6 +394,36 @@
       },
       "set_clock": {
         "name": "Set PC-Link clock"
+      },
+      "press_key_upper": {
+        "name": "Press {key} · upper"
+      },
+      "press_key_lower": {
+        "name": "Press {key} · lower"
+      },
+      "press_key_upper_left": {
+        "name": "Press {key} · upper left"
+      },
+      "press_key_lower_left": {
+        "name": "Press {key} · lower left"
+      },
+      "press_key_upper_right": {
+        "name": "Press {key} · upper right"
+      },
+      "press_key_lower_right": {
+        "name": "Press {key} · lower right"
+      },
+      "press_key_upper_mid_left": {
+        "name": "Press {key} · upper mid-left"
+      },
+      "press_key_lower_mid_left": {
+        "name": "Press {key} · lower mid-left"
+      },
+      "press_key_upper_mid_right": {
+        "name": "Press {key} · upper mid-right"
+      },
+      "press_key_lower_mid_right": {
+        "name": "Press {key} · lower mid-right"
       }
     },
     "sensor": {
