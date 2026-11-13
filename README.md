@@ -158,6 +158,8 @@ The wording is the library's, taken from the vendor's manuals. A mode on two or 
 
 Nikobus NG can be tried without losing anything: it has its own domain and its own store, and re-enabling the Nikobus entry takes you back.
 
+The step-by-step guide, with the actions and entities that change and the way back, is **[Moving from Nikobus to Nikobus NG](docs/migrating-from-nikobus.md)**.
+
 **Take over** (*Configure → Take over from the Nikobus integration*), with the Nikobus entry disabled, moves onto Nikobus NG's entities:
 
 - the entity ID, name, area, aliases, labels, icon and voice-assistant exposure of lights, switches, covers, fans, scenes, input switches and key press buttons, so dashboards, automations and history keep working;
