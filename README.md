@@ -13,7 +13,7 @@
 
 Control your **Nikobus** installation from Home Assistant: switches, dimmers and shutters as native entities, every key as an event for your automations, and the wiring of the installation as data an AI assistant can read. Modules, plates and links are **read from the bus in one discovery**, and names, rooms and scenes come from your **`.nkb` project file**.
 
-Nikobus NG is a second integration, written from scratch next to the [Nikobus integration](https://github.com/fdebrus/Nikobus-HA) on the same protocol library, [nikobus-connect](https://github.com/fdebrus/nikobus-connect). It does not replace it: Nikobus stays, and stays maintained. The two use different domains and can be installed side by side, one enabled at a time.
+Nikobus NG ("Next Generation") is a second integration, written from scratch next to the [Nikobus integration](https://github.com/fdebrus/Nikobus-HA) on the same protocol library, [nikobus-connect](https://github.com/fdebrus/nikobus-connect). The name says what it is: a fresh design of the same thing, not its successor yet. Nikobus stays, and stays maintained. The two use different domains and can be installed side by side, one enabled at a time.
 
 > **Experimental.** Nikobus NG runs on one real installation so far, and most of it has only been tested against a simulated PC-Link. [What is verified](#what-is-verified) says exactly what has and has not been seen on hardware. Testers are welcome, especially with hardware listed there as not seen.
 
