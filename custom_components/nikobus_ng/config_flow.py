@@ -241,16 +241,16 @@ class NikobusOptionsFlow(OptionsFlowWithReload):
         if self.config_entry.state is not ConfigEntryState.LOADED:
             return self.async_abort(reason="not_loaded")
         inventory = self._inventory()
-        steps = ["gateway"]
+        steps = ["names"]
         if _output_options(inventory, SWITCH_MODULE, DIMMER_MODULE):
             steps.append("outputs")
         if _output_options(inventory, ROLLER_MODULE):
             steps.append("shutter")
         if _output_options(inventory, *OUTPUT_MODULE_TYPES):
             steps.append("led_key")
+        steps.append("gateway")
         if inventory.addresses():
             steps.append("module_type")
-        steps.append("names")
         if inventory.is_empty or inventory.from_project:
             steps.append("files")
         # Offered again while something is left to take: an earlier version took no keys, and no settings.

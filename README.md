@@ -40,7 +40,7 @@ Nikobus NG ("Next Generation") is a second integration, written from scratch nex
 2. **Install** through HACS as a custom repository (button below) and restart Home Assistant.
 3. **Add the integration**: *Settings → Devices & services → Add integration → Nikobus NG*. Enter the serial port (`/dev/ttyUSB0`) or the TCP bridge (`192.168.2.50:9999`).
 4. **Wait for the discovery.** It starts by itself; follow it on the *Discovery* sensor of the **Nikobus Bridge** device. Entities appear when it ends. A large installation takes a few minutes.
-5. *(Optional)* **Upload your `.nkb`** under *Configure → Names from the project file* for names, rooms and scenes.
+5. *(Optional)* **Upload your `.nkb`** under *Configure → Import names (.nkb)* for names, rooms and scenes.
 6. *(Optional)* Press **Back up programming** once and keep the folder somewhere safe.
 
 Coming from the Nikobus integration? See [Coming from Nikobus](#coming-from-nikobus).
@@ -73,14 +73,14 @@ Everything else is under **Configure** on the integration's entry:
 
 | Menu | What it sets |
 |---|---|
+| Import names (.nkb) | upload the `.nkb`: names, rooms as areas, scene names |
+| Lights and fans | which relays are lights, which dimmer outputs are fans, labels by kind |
+| Shutter run times | show it as a cover, switch or light; its run times and end margin |
+| Keep button LEDs in sync | the keys pressed to switch it on and off, so the plate's LED follows |
 | Gateway | Feedback Module, a PC-Link older than generation 3, telegrams per press |
-| Lights, fans and labels | which relays are lights, which dimmer outputs are fans, labels by kind |
-| A roller output | show it as a cover, switch or light; its run times and end margin |
-| LED keys of an output | the keys pressed to switch it on and off, so the plate's LED follows |
-| The type of a module | correct a module the inventory has as another type |
-| Names from the project file | upload the `.nkb`: names, rooms as areas, scene names |
-| Inventory from two files | for an installation with neither a PC-Link nor a `.nkb` |
-| Take over from the Nikobus integration | see [Coming from Nikobus](#coming-from-nikobus) |
+| Correct a module's type | correct a module the inventory has as another type |
+| Import inventory files | for an installation with neither a PC-Link nor a `.nkb` |
+| Take over from Nikobus | see [Coming from Nikobus](#coming-from-nikobus) |
 
 To change the connection itself, use **Reconfigure** on the entry.
 
@@ -160,7 +160,7 @@ Nikobus NG can be tried without losing anything: it has its own domain and its o
 
 The step-by-step guide, with the actions and entities that change and the way back, is **[Moving from Nikobus to Nikobus NG](docs/migrating-from-nikobus.md)**.
 
-**Take over** (*Configure → Take over from the Nikobus integration*), with the Nikobus entry disabled, moves onto Nikobus NG's entities:
+**Take over** (*Configure → Take over from Nikobus*), with the Nikobus entry disabled, moves onto Nikobus NG's entities:
 
 - the entity ID, name, area, aliases, labels, icon and voice-assistant exposure of lights, switches, covers, fans, scenes, input switches and key press buttons, so dashboards, automations and history keep working;
 - relays that were lights become lights;

@@ -60,7 +60,7 @@ In numbers, Nikobus 3.31.6 against Nikobus NG 0.10.3, integration code only:
 1. Back up Home Assistant and note what uses Nikobus events and actions.
 2. Install Nikobus NG, disable the Nikobus entry, add Nikobus NG.
 3. Let the discovery finish, then upload your `.nkb`.
-4. Run **Take over from the Nikobus integration**.
+4. Run **Take over from Nikobus**.
 5. Change by hand the automations that use Nikobus events or actions.
 6. Live with it for a while. Keep the Nikobus entry disabled, not deleted.
 
@@ -114,7 +114,7 @@ unavailable. That is expected.
 
 ## Step 3: names
 
-*Configure → Names from the project file*, upload the `.nkb`, leave *rooms as
+*Configure → Import names (.nkb)*, upload the `.nkb`, leave *rooms as
 areas* ticked.
 
 Modules and plates take their names and rooms; a plate is shown as
@@ -126,7 +126,7 @@ entry and disable Nikobus NG: nothing of yours has been touched yet.
 
 ## Step 4: take over
 
-*Configure → Take over from the Nikobus integration.* The form says how many
+*Configure → Take over from Nikobus.* The form says how many
 entities would move before anything does. Submit it; the entry reloads.
 
 What moves onto Nikobus NG's entities:
@@ -298,7 +298,7 @@ sentence, `does`, on what it does.
 
 Until you delete the Nikobus entry, the way back is:
 
-1. *Configure → Give back to the Nikobus integration.* Each Nikobus entity
+1. *Configure → Give back to Nikobus.* Each Nikobus entity
    gets its ID back; Nikobus NG's entities return to the IDs they had.
 2. Disable the Nikobus NG entry.
 3. Enable the Nikobus entry.
@@ -328,7 +328,7 @@ integration being installed.
 | No *Take over* in the menu | Nothing is left to take, or the discovery has not finished. |
 | A repair "module is not answering" for a module you do not have | A PC-Link keeps listing what was once in its project. Delete that device; it stays out. |
 | A shutter or an output is missing | It is created disabled when no key drives it. Enable the entity. |
-| A shutter's position drifts on closing | Only the times set in Nikobus are carried. Set the closing time under *Configure → A roller output*. |
+| A shutter's position drifts on closing | Only the times set in Nikobus are carried. Set the closing time under *Configure → Shutter run times*. |
 | Entities stay unavailable after the take-over | Check the *Connection* sensor of the Nikobus Bridge; make sure no other program holds the port. |
 | An automation fires several times per press | It triggers on `nikobus_ng_press` without `type`. |
 

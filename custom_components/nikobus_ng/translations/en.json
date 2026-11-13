@@ -36,17 +36,29 @@
   "options": {
     "step": {
       "init": {
-        "title": "Nikobus options",
+        "title": "Nikobus NG settings",
+        "description": "Everything here is optional: the discovery already found your modules, outputs and keys. Use these to tell Home Assistant what the bus cannot say.",
         "menu_options": {
+          "names": "Import names (.nkb)",
+          "outputs": "Lights and fans",
+          "shutter": "Shutter run times",
+          "led_key": "Keep button LEDs in sync",
           "gateway": "Gateway",
-          "outputs": "Lights, fans and labels",
-          "shutter": "A roller output",
-          "led_key": "LED keys of an output",
-          "module_type": "The type of a module",
-          "names": "Names from the project file",
-          "files": "Inventory from two files",
-          "take_over": "Take over from the Nikobus integration",
-          "give_back": "Give back to the Nikobus integration"
+          "module_type": "Correct a module's type",
+          "files": "Import inventory files",
+          "take_over": "Take over from Nikobus",
+          "give_back": "Give back to Nikobus"
+        },
+        "menu_option_descriptions": {
+          "names": "Take the names and rooms of modules, buttons, outputs and scenes from your Nikobus software project.",
+          "outputs": "Say which relays switch a lamp and which dimmer outputs drive a fan, so they become lights and fans instead of switches and lights.",
+          "shutter": "Set how long a shutter takes to open and close, or use a roller output for something other than a shutter.",
+          "led_key": "Switch an output through one of its keys, so the LED on the wall button follows when Home Assistant switches it.",
+          "gateway": "Feedback Module, an older PC-Link, and how many telegrams a press sent by Home Assistant repeats.",
+          "module_type": "For a module the discovery lists as the wrong type. Rarely needed.",
+          "files": "For an installation without a PC-Link: load the module and button files of the Nikobus integration.",
+          "take_over": "Move entity IDs, names and areas from the Nikobus integration to this one. Can be undone.",
+          "give_back": "Undo the take-over: every entity gets back the ID it had."
         }
       },
       "gateway": {
@@ -63,7 +75,7 @@
         }
       },
       "shutter": {
-        "title": "A roller output",
+        "title": "Shutter run times",
         "data": {
           "output": "Output"
         },
@@ -72,7 +84,7 @@
         }
       },
       "shutter_settings": {
-        "title": "A roller output",
+        "title": "Shutter run times",
         "description": "The module's own links run this output {open} to open and {close} to close. Leave a time empty to use that. An end margin left empty is {margin}.",
         "data": {
           "use_as": "It drives",
@@ -88,7 +100,7 @@
         }
       },
       "names": {
-        "title": "Names from the project file",
+        "title": "Import names (.nkb)",
         "description": "Upload the .nkb project of the Nikobus software to take the names it holds for modules, plates, outputs and light scenes. Names you gave in Home Assistant are kept.",
         "data": {
           "project_file": "Project file (.nkb)",
@@ -101,7 +113,8 @@
         }
       },
       "outputs": {
-        "title": "Lights, fans and labels",
+        "title": "Lights and fans",
+        "description": "A relay cannot say what it switches, and a dimmer output cannot say whether it drives a lamp or a fan. Tick what applies; the entities change after the reload.",
         "data": {
           "light_outputs": "Relays that are lights",
           "fan_outputs": "Dimmer outputs that are fans",
@@ -114,7 +127,7 @@
         }
       },
       "led_key": {
-        "title": "LED keys of an output",
+        "title": "Keep button LEDs in sync",
         "data": {
           "output": "Output"
         },
@@ -123,7 +136,7 @@
         }
       },
       "led_key_settings": {
-        "title": "LED keys of an output",
+        "title": "Keep button LEDs in sync",
         "description": "A plate's LED follows the telegrams of its key, not an output written directly. With a key set here, Home Assistant switches the output by that key: it reads the module first and leaves the key alone when the output is already there. Offered are the keys linked to this output; another address can be typed. Leave both empty to write the output directly again.",
         "data": {
           "on_key": "Key that switches it on",
@@ -135,7 +148,7 @@
         }
       },
       "module_type": {
-        "title": "The type of a module",
+        "title": "Correct a module's type",
         "description": "For a module the inventory holds as another type than it is. Its entities change to match, and its links are read again by themselves once the integration has reloaded, since they are decoded by type. The choice stays through later discoveries.",
         "data": {
           "module": "Module",
@@ -146,7 +159,7 @@
         }
       },
       "files": {
-        "title": "Inventory from two files",
+        "title": "Import inventory files",
         "description": "For an installation with neither a PC-Link nor a project file: the two files of the Nikobus integration, one listing the modules and their outputs, the other the keys. They replace what is known. What they say of an output (light, fan, LED keys, run times) becomes the matching option here. The links are then read from the modules, which takes a few minutes.",
         "data": {
           "module_file": "Module file (nikobus_module_config.json)",
@@ -154,11 +167,11 @@
         }
       },
       "take_over": {
-        "title": "Take over from the Nikobus integration",
+        "title": "Take over from Nikobus",
         "description": "{entities} entities of the Nikobus integration have a counterpart here: its lights, switches, covers, fans, scenes, input switches and keys. Submitting moves each one's entity ID, name as shown, area, aliases, labels, icon and voice-assistant exposure onto this integration's entity, so dashboards, automations and history keep working. {lights} relays become lights here to match.\n\nThe Nikobus entities are kept, parked under their ID followed by `_nikobus`, and **Give back** undoes all of it.\n\nWhat the Nikobus integration holds per output is taken too, where nothing is set here: the LED keys of {led_keys} outputs, and the run times of {run_times} shutters.\n\nA key is a binary sensor there and an event entity here. The event entity takes the sensor's ID under `event.`, with its name, area and labels; the sensor keeps its own ID. Automations that read a key's sensor, or use the Nikobus bus events and actions by name, have to be changed by hand.\n\nNot taken over: {left} other Nikobus entities, mostly those of its bridge.\n\nKeep the Nikobus entry disabled: only one program may talk to the bus."
       },
       "give_back": {
-        "title": "Give back to the Nikobus integration",
+        "title": "Give back to Nikobus",
         "description": "{entities} entities were taken over. Submitting gives each Nikobus entity its entity ID back, and this integration's entities the IDs they had before. Names, areas and aliases stay as they are on both."
       }
     },
